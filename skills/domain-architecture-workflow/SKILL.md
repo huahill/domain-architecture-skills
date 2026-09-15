@@ -19,7 +19,7 @@ If another planning, TDD, or review workflow is already active, use this skill o
 4. Use `using-jfoundry` only when applicable and after domain and architecture assumptions are clear. If jfoundry use is undecided, continue framework-neutral phases without invoking it and defer the choice until a framework-specific next activity materially requires it.
 5. Produce a composite `Domain Architecture Handoff` that makes planning readiness, dependent blockers, and the next owner explicit.
 6. Persist workflow-owned artifacts under the default documentation directory, then route detailed planning to its `plans` subdirectory or to the user-selected process companion. The companion alone owns its plan files, tasks, and execution state.
-7. During implementation or review, revisit the modeling or architecture phase when changed business meaning, drift, or conflicts invalidate assumptions.
+7. During implementation or review, consume the persisted handoff as this project's decisions. Re-invoke the specialist whose concern is being implemented even when that phase is already `completed`. Revisit modeling or architecture only when changed business meaning, drift, or conflicts invalidate assumptions. Write back only newly confirmed project decisions; do not copy specialist tutorials into the handoff.
 
 ## Skill Routing
 
@@ -29,7 +29,7 @@ If another planning, TDD, or review workflow is already active, use this skill o
 
 ## Result And Handoff Routing
 
-Read [references/first-use.md](references/first-use.md) when the user asks how to start an end-to-end project or combine this workflow with an optional process companion.
+Read [references/first-use.md](references/first-use.md) when the user asks how to start an end-to-end project, combine this workflow with an optional process companion, or implement from an existing handoff. Persisted artifacts are decision memory, not a substitute for specialist skills.
 
 Read [references/implementation-planning.md](references/implementation-planning.md) when handing a completed analysis to detailed planning, selecting the smallest independently verifiable increment, or later introducing a process companion to an existing handoff.
 
@@ -46,3 +46,5 @@ Read [references/workflow-results.md](references/workflow-results.md) before coo
 - Attribute guidance to the right source: DDD concepts, architecture style constraints, framework conventions, heuristics, or project policies.
 - Keep this workflow independent. It can run alongside other process skills, but it must not require them.
 - Treat a `Domain Architecture Handoff` as planning input, not as a detailed implementation plan. Use the plugin's default documentation directory for workflow-owned artifacts and never reproduce a selected companion's process artifacts.
+- Persist project-specific decisions, constraints, and open questions. Do not copy specialist references, framework tutorials, or sample code into `docs/domain-architecture/`.
+- A completed handoff does not replace specialist skills. Implementation still executes the relevant specialist for that increment's concern.

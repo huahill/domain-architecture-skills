@@ -121,6 +121,10 @@ Produce one composite handoff containing:
 
 Keep distinctions explicit among domain-modeling decisions, architecture-style constraints, framework conventions, heuristics, and project policies.
 
+The persisted handoff and specialist result files record this project's choices. They must not
+reproduce specialist references or framework tutorials, and they do not retire those skills.
+Implementation still executes the specialist that owns the concern being coded.
+
 The coordinator may summarize or reference a specialist payload, but it must preserve the evidence
 state of every consumed domain item. A proposed target cannot appear under confirmed decisions. It
 may support a dependent handoff only as an explicitly accepted assumption with its acceptance

@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Domain modeling and architecture workflow plugins for business software systems.",
-    "version": "0.3.0"
+    "version": "0.3.1"
   },
   "plugins": [
     {
       "name": "domain-architecture",
       "source": "./",
       "description": "Domain modeling and architecture workflow plugin for business software systems.",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "strict": true
     }
   ]

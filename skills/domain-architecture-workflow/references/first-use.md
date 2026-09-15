@@ -119,11 +119,13 @@ When a domain or architecture blocker changes the specification, return the ques
 ## Later Companion Adoption
 
 If the plugin produced domain and architecture artifacts before a process companion was chosen,
-do not repeat completed phases merely to adopt the companion. Give it the persisted specialist
+do not repeat completed decision phases merely to adopt the companion. Give it the persisted specialist
 results and handoff, including confirmed decisions, constraints, and open questions. It creates
-its own specification and plan artifacts from that input. Revisit a specialist only when current
-requirements contradict the existing evidence or the planned increment changes business meaning
-or architecture boundaries.
+its own specification and plan artifacts from that input. Do not repeat a completed decision phase
+unless current requirements contradict the existing evidence or the planned increment changes
+business meaning or architecture boundaries. When a later task implements a specialist concern such
+as persistence, messaging, or runtime assembly, execute that specialist against the persisted
+decisions; do not treat the handoff documents as the skill.
 
 ## Consuming And Revisiting The Handoff
 
@@ -131,6 +133,9 @@ or architecture boundaries.
 - When a phase is `needs-input`, preserve completed results, return the blocker to the activity that owns the missing fact, and pause only dependent progression.
 - When no companion is selected, plugin-managed detailed planning is the next activity under
   `docs/domain-architecture/plans/`.
+- Persisted `docs/domain-architecture/` artifacts record this project's choices. They are not a second copy of specialist skills and must not be expanded into tutorials.
+- When implementing a selected capability, re-invoke the specialist that owns that capability even if its phase is `completed`. Example: before writing MyBatis-Plus aggregate adapters, run `using-jfoundry` and read its persistence and repository references plus the selected jfoundry release.
+- Do not wait for architecture drift before re-entering `using-jfoundry`. Drift returns to Architecture Guidance; ordinary framework-shaped implementation still uses the landing skill.
 - When implementation exposes architecture drift, return to `domain-architecture-guidance` and revise affected downstream guidance.
 - When implementation changes Subdomain scope, Bounded Context meaning, team or rule ownership,
   a context relationship, current/target intent, or other business meaning, return to

@@ -193,3 +193,11 @@ Use these compact scenarios to review routing and result protocols. Each scenari
 **Expected:** Record the direction of collaboration, concept and data ownership, business meaning, and the collaboration or model-protection decision, each with `confirmed | inferred | proposed` item status and item-level evidence. When current and target relationships differ, preserve separate status and evidence for each. Hand off the integration need to Architecture Guidance, which decides the interface and integration mechanisms; do not choose HTTP, messaging, schemas, ports, adapters, or topology in strategic modeling.
 
 **Prohibited:** Inferring integration technology from the context relationship, choosing delivery guarantees during strategic modeling, or allowing a transport or deployment shape to decide cross-context business meaning.
+
+## Scenario 25: Implement Persistence From A Completed Handoff
+
+**Input:** A jfoundry Hexagonal project has completed Domain Modeling, Architecture Guidance, and JFoundry Implementation Guidance. A process companion task now implements aggregate persistence against existing tables.
+
+**Expected:** Consume the persisted handoff as project decisions. Re-invoke `using-jfoundry`, read persistence and repository references plus the selected release, and name each aggregate's adapter shape (`MybatisPlusAggregateRepository` for a single root record, a business persistence adapter with complete child synchronization for root-plus-dependents, or a direct repository implementation). Persist only those project choices. Do not implement ordinary mapper/XML/DO repositories merely because a companion plan says "migrate MyBatis".
+
+**Prohibited:** Treating `docs/domain-architecture/` as a substitute for `using-jfoundry`; copying persistence tutorials into the handoff; skipping the specialist because the landing phase is already `completed`.

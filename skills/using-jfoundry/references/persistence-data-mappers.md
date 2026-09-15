@@ -27,4 +27,6 @@ Do not override public lifecycle methods on jfoundry repository bases. Use their
 
 The project, not the persistence library, chooses full replacement, differential updates, append-only writes, child-delete ordering, audit mapping, and duplicate-key interpretation. Translate a database constraint to the selected release's documented application conflict outcome only when it represents the intended business conflict.
 
+The business project's handoff records only the chosen adapter shape per aggregate, the existing tables the adapter must reuse, whether `@Version` is present and allowed on the root data, and which statements remain XML because compare-and-set, locking, or database-specific SQL requires them. Do not copy this reference into `docs/domain-architecture/`. Re-read it when implementing or changing persistence adapters.
+
 Resolve the selected release's supported persistence artifacts after choosing the outer adapter and runtime assembly. Read `references/upstream-documentation.md` for coordinates, mapper signatures, helper methods, transaction integration, and provider-specific details.

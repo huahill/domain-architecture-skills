@@ -79,7 +79,7 @@ requirements
 -> detailed planning or the selected process companion
 ```
 
-The handoff preserves specialist results, decisions, constraints, open questions, and blockers. It identifies the smallest planning-ready increment and its next owner; it is planning input, not a detailed implementation plan. The workflow supports a versioned machine-readable handoff contract with stable identity, revisions, dependency-scoped blockers, artifact references, accepted-assumption evidence, and planning-readiness metadata. Markdown remains the human-readable projection, and existing text-only consumers remain compatible. Persisted workflow artifacts use `docs/domain-architecture/`, and standalone detailed plans use its `plans/` child directory.
+The handoff preserves specialist results, decisions, constraints, open questions, and blockers. It identifies the smallest planning-ready increment and its next owner; it is planning input, not a detailed implementation plan. Persisted `docs/domain-architecture/` artifacts are this project's decision memory: they must not copy specialist tutorials, and they do not replace specialist skills. When implementing a decided capability such as persistence, re-invoke the owning specialist even if that phase is already completed. The workflow supports a versioned machine-readable handoff contract with stable identity, revisions, dependency-scoped blockers, artifact references, accepted-assumption evidence, and planning-readiness metadata. Markdown remains the human-readable projection, and existing text-only consumers remain compatible. Persisted workflow artifacts use `docs/domain-architecture/`, and standalone detailed plans use its `plans/` child directory.
 
 | Need | Entry point |
 |---|---|

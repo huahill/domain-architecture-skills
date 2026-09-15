@@ -35,13 +35,24 @@ detailed plans only when no process companion owns them.
 Existing documents outside this tree may be used as input evidence, but they do not change the
 plugin output location. Do not create a second plugin artifact tree.
 
+## Artifact Depth
+
+Persisted workflow artifacts are this project's decision memory:
+
+- Record confirmed choices, constraints, accepted assumptions, open questions, and pointers to
+  specialist skills or upstream docs.
+- Do not copy specialist references, architecture textbooks, or framework how-to into these files.
+- A completed `04-jfoundry-implementation-guidance.md` names project landing choices such as BOM,
+  starters, package roles, and per-aggregate persistence adapter shape. It does not replace
+  `using-jfoundry` at implementation time.
+
 ## Select The Required Depth
 
 | Increment evidence | Required workflow depth |
 |---|---|
 | New business landscape, system decomposition or modernization, multi-team boundary, Subdomain/Bounded Context decision, or cross-context semantic conflict | Strategic Domain Modeling first, followed only by the tactical modeling and Architecture Guidance needed for the first planning-ready context or increment. |
 | New domain behavior, invariants, bounded-context ownership, or external collaboration | Domain Modeling, Architecture Guidance, then optional framework landing before detailed planning. |
-| Existing architecture with a business increment | Reuse confirmed results; revisit only the affected modeling, architecture, or landing phase. |
+| Existing architecture with a business increment | Reuse confirmed results as decisions; re-invoke the implementation specialist when coding its concern, and revisit a decision phase only when meaning or constraints change. |
 | Simple CRUD under established conventions | Record why richer modeling or an architecture decision is unnecessary; then plan the change. |
 | Localized fix with no business or boundary change | Diagnose and plan the fix directly; return to a specialist only when the investigation exposes changed meaning or architecture drift. |
 
@@ -101,9 +112,11 @@ It must consume the resulting handoff before finalizing a detailed plan or depen
 
 An existing project can adopt a companion after an independent domain/architecture pass. The
 companion reads the persisted specialist results and handoff, preserves confirmed decisions and
-open questions, and creates only its own planning artifacts. Re-run a specialist only when the
-evidence is stale, a business meaning changed, or a proposed implementation conflicts with an
-existing constraint.
+open questions, and creates only its own planning artifacts. Do not repeat completed decision
+phases merely because a companion was added. Re-run a decision phase when the evidence is stale, a
+business meaning changed, or a proposed implementation conflicts with an existing constraint.
+When the companion later implements a specialist concern, execute that specialist against the
+persisted decisions rather than coding from the handoff documents alone.
 
 ## Return Path
 
@@ -111,5 +124,8 @@ Implementation discoveries that alter Subdomain scope, Bounded Context meaning, 
 ownership, a context relationship, current/target intent, or other business meaning return to
 Domain Modeling. Discoveries that alter architecture boundaries or dependency direction without
 changing those domain decisions return to Architecture Guidance. Framework conflicts return to
-JFoundry Implementation Guidance when applicable. Preserve unaffected completed results. The
-planning owner updates its own artifacts after the revised handoff is available.
+JFoundry Implementation Guidance when applicable. Coding a previously decided persistence,
+messaging, or runtime adapter is not by itself a return-path event: execute the relevant specialist
+against the existing decisions, and write back only newly confirmed project-specific choices.
+Preserve unaffected completed results. The planning owner updates its own artifacts after the
+revised handoff is available.

@@ -7,7 +7,8 @@ This reference defines the first-generation structured representation of the coo
 ## Purpose and Ownership
 
 The handoff is planning and review input, not a detailed implementation plan. Specialist results
-remain authoritative for their own payloads:
+remain authoritative for their own payloads, and persisted Markdown artifacts remain this project's
+decision memory rather than a substitute for those specialists:
 
 ```text
 Domain Modeling Result
