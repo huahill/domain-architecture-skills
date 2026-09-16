@@ -99,6 +99,7 @@ Claude Code 的市场管理功能移除原来的市场条目。
 ## 进阶使用
 
 - 只有在确认或明确要求 jfoundry 时才使用 `using-jfoundry`；框架尚未决定不会阻塞框架中立的领域建模和架构指导。其[架构落地说明](skills/using-jfoundry/references/architecture.md)保留已选架构风格，而不是替项目选择一种风格。
+- 实施聚合持久化前，`using-jfoundry` 要求完成项目局部的 **Aggregate Persistence Preflight**，并建立仓储语义架构规则。该预检把聚合生命周期仓储与非聚合的读取、存储、CAS、租约和历史契约区分开；参见[持久化指导](skills/using-jfoundry/references/persistence-data-mappers.md)和[测试指导](skills/using-jfoundry/references/testing.md)。
 - Superpowers、SpecKit、OpenSpec 等流程伴侣是可选且由用户选择的。它们拥有自身的规格、规划、任务、实施、评审、文件和命令；本插件拥有专业结果和交接。[首次使用指南](skills/domain-architecture-workflow/references/first-use.md)定义了输入、责任归属、状态和返回规则。
 - 结构化交接契约以增量方式加入，不改变专业结果的所有权，也不要求工作流引擎。仓库现在提供基于标准库的交接校验、阻塞项解决后生成新修订版本，以及摘要/完整 Markdown 投影工具；数据库持久化和分布式恢复仍不在当前阶段。当前契约见 [handoff-contract.md](skills/domain-architecture-workflow/references/handoff-contract.md)，其 JSON Schema 见[这里](schemas/domain-architecture-handoff.schema.json)。
 - 交接消费方可以请求摘要或完整投影。持久化产物可以声明敏感性分类和脱敏要求；流程伴侣消费契约和引用，但仍然拥有自己的规划与执行状态。

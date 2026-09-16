@@ -2,6 +2,19 @@
 
 Use this reference when a business project selects JPA or MyBatis-Plus aggregate persistence. Persistence is an outer adapter concern; domain aggregates remain free of ORM annotations, mapper types, table fields, and persistence versions.
 
+## Aggregate Persistence Preflight
+
+Before writing or changing an aggregate adapter, complete this project-local preflight:
+
+1. List aggregate roots in the increment and the invariant each aggregate protects.
+2. Name the owning contract for each root as a domain aggregate repository contract; keep it near the aggregate and free of ORM types.
+3. Confirm the contract follows the selected jfoundry lifecycle abstraction and that application orchestration calls `add / modify / remove` rather than a generic `save`.
+4. Name every non-aggregate read, store, CAS, lease, or history contract separately, with its consumer and result shape; do not give it the Repository suffix.
+5. Select an adapter shape below for each aggregate, including any direct implementation exception and the reason runtime weaving or child synchronization makes it necessary.
+6. Record existing tables, root-version policy, and database-specific statements, then turn the naming and adapter decisions into architecture tests before implementation proceeds.
+
+If aggregate ownership or lifecycle is unclear, return to domain modeling rather than converting a DAO into a repository.
+
 ## Choose The Adapter Shape
 
 | Situation | Recommended shape |

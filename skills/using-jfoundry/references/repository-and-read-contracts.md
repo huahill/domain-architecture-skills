@@ -22,4 +22,4 @@ In Hexagonal projects, use primary/secondary port terminology where it clarifies
 - Primary adapters invoke an application boundary. They do not call aggregate repositories or query implementations directly.
 - Do not enable CQRS only because a method reads data; use it when command and read models genuinely diverge.
 
-Read `references/persistence-data-mappers.md` when implementing the outer persistence adapter and `references/upstream-documentation.md` for exact repository base contracts.
+Read `references/persistence-data-mappers.md` and complete its **Aggregate Persistence Preflight** when implementing the outer persistence adapter. Read `references/upstream-documentation.md` for exact repository base contracts.
