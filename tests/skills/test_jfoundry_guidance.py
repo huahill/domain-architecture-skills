@@ -3,6 +3,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 USING_JFOUNDRY = ROOT / "skills" / "using-jfoundry"
+ARCHITECTURE_GUIDANCE = ROOT / "skills" / "domain-architecture-guidance"
+WORKFLOW = ROOT / "skills" / "domain-architecture-workflow"
+PACKAGE_SEMANTICS = ARCHITECTURE_GUIDANCE / "references" / "package-and-type-semantics.md"
 PERSISTENCE = USING_JFOUNDRY / "references" / "persistence-data-mappers.md"
 REPOSITORIES = USING_JFOUNDRY / "references" / "repository-and-read-contracts.md"
 TESTING = USING_JFOUNDRY / "references" / "testing.md"
@@ -18,6 +21,100 @@ class JFoundryGuidanceTests(unittest.TestCase):
             "add / modify / remove",
             "non-aggregate read, store, CAS, lease, or history contract",
             "Repository suffix",
+        ):
+            self.assertIn(required, text)
+
+    def test_architecture_guidance_routes_package_semantics_preflight(self):
+        text = (ARCHITECTURE_GUIDANCE / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("package-and-type-semantics.md", text)
+        self.assertIn("Package And Type Semantics Preflight", text)
+
+    def test_package_semantics_reference_requires_preflight_and_naming_matrix(self):
+        text = PACKAGE_SEMANTICS.read_text(encoding="utf-8")
+        for required in (
+            "Package And Type Semantics Preflight",
+            "Package Granularity Signals",
+            "Type Semantics Inventory",
+            "Naming Contract Matrix",
+            "`*Request`, `*Response`",
+            "Repository",
+            "Gateway",
+            "Client",
+        ):
+            self.assertIn(required, text)
+
+    def test_workflow_planning_gates_package_and_type_semantics(self):
+        text = (WORKFLOW / "references" / "implementation-planning.md").read_text(encoding="utf-8")
+        self.assertIn("Package And Type Semantics Preflight", text)
+        self.assertIn("architecture tests", text)
+
+    def test_package_semantics_requires_primary_port_contract_preflight(self):
+        text = PACKAGE_SEMANTICS.read_text(encoding="utf-8")
+        self.assertIn("Primary Port Contract Vocabulary Preflight", text)
+        for required in (
+                "`*Input` must not coexist with `*Command`",
+                "`*Command` must reside in a `port.in.command`",
+                "`*Query` must reside in a `port.in.query`",
+                "`*Result` must reside in a `port.in.result`",
+                "application code must not own `*Request` / `*Response` models",
+        ):
+            self.assertIn(required, text)
+
+    def test_jfoundry_exception_guidance_requires_preflight_and_guardrails(self):
+        text = (USING_JFOUNDRY / "references" / "exception-handling.md").read_text(encoding="utf-8")
+        self.assertIn("Exception And Problem Contract Preflight", text)
+        for required in (
+                "extend `DomainException` or `ApplicationException`",
+                "parallel business-exception hierarchy",
+                "`ProblemDetailsExceptionHandler`",
+                "`@RestControllerAdvice` / `@ControllerAdvice`",
+                "legacy protocol compatibility",
+                "retryability",
+                "architecture test",
+        ):
+            self.assertIn(required, text)
+
+    def test_jfoundry_testing_requires_exception_and_problem_rules(self):
+        text = TESTING.read_text(encoding="utf-8")
+        self.assertIn("Exception and problem mapping rules", text)
+        for required in (
+                "DomainException",
+                "ApplicationException",
+                "@RestControllerAdvice",
+                "@ControllerAdvice",
+                "ProblemDetailsExceptionHandler",
+                "ProblemMapper",
+        ):
+            self.assertIn(required, text)
+
+    def test_workflow_planning_gates_exception_and_problem_contract(self):
+        text = (WORKFLOW / "references" / "implementation-planning.md").read_text(encoding="utf-8")
+        self.assertIn("Exception And Problem Contract Preflight", text)
+
+    def test_jfoundry_architecture_requires_domain_type_marker_preflight(self):
+        text = (USING_JFOUNDRY / "references" / "architecture.md").read_text(encoding="utf-8")
+        self.assertIn("Domain Type Marker Preflight", text)
+        for required in (
+            "Identifier",
+            "ValueObject",
+            "BaseAggregateRoot",
+            "BaseEntity",
+            "DomainEvent",
+            "vacuous",
+        ):
+            self.assertIn(required, text)
+
+    def test_jfoundry_testing_requires_non_vacuous_domain_semantic_rules(self):
+        text = TESTING.read_text(encoding="utf-8")
+        self.assertIn("Domain type semantics and naming rules", text)
+        for required in (
+            "Identifier",
+            "ValueObject",
+            "DomainEvent",
+            "marker coverage",
+            "`Request`, `Response`",
+            "Gateway",
+            "Client",
         ):
             self.assertIn(required, text)
 

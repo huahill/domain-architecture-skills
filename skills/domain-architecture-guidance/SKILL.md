@@ -24,8 +24,9 @@ DDD is a domain modeling methodology and language for business concepts, boundar
 7. Apply source hierarchy from `references/source-policy.md` before citing or enforcing a rule.
 8. Apply architecture constraints from `references/architecture-constraints.md` before changing boundaries or dependency direction.
 9. Apply backend implementation guidance from `references/backend-guidance.md` when changing code or recommending structure.
-10. State uncertainty explicitly when a rule is context-dependent.
-11. For architecture decisions, reviews, and boundary-affecting implementation recommendations, produce an `Architecture Guidance Result` from `references/architecture-result.md` with consumed domain decisions, traceable architecture consequences, rule sources, constraints, evidence, open questions, and readiness for the recommended next step. Simple conceptual explanations and documentation answers may remain concise unless the user asks for a structured result.
+10. Complete the Package And Type Semantics Preflight from `references/package-and-type-semantics.md` before changing package ownership or adding domain/application/adapter types in a non-trivial increment.
+11. State uncertainty explicitly when a rule is context-dependent.
+12. For architecture decisions, reviews, and boundary-affecting implementation recommendations, produce an `Architecture Guidance Result` from `references/architecture-result.md` with consumed domain decisions, traceable architecture consequences, rule sources, constraints, evidence, open questions, and readiness for the recommended next step. Simple conceptual explanations and documentation answers may remain concise unless the user asks for a structured result.
 
 ## Core Rules
 
@@ -56,6 +57,8 @@ Read only the references required by the task.
   Adapters work, including port roles, adapter direction, or application-service naming.
 - For implementation or code review, read `references/backend-guidance.md`. Retrieve current
   upstream documentation before using exact framework or library APIs.
+- Read `references/package-and-type-semantics.md` when reviewing or changing package granularity, domain
+  type semantics, model naming, port/adapter naming, or marker-based architecture tests.
 - Read `references/architecture-testing.md` only when selecting, implementing, or reviewing
   architecture validation.
 - For Java projects that use jfoundry, route confirmed architecture decisions to `using-jfoundry`

@@ -43,4 +43,17 @@ Keep the optional shared package independent of Spring, ORM, HTTP, broker, and S
 an escape hatch for code with unclear ownership. In particular, do not move a domain rule into it
 because multiple aggregates use it; model that rule as a domain concept or domain service instead.
 
+## Domain Type Marker Preflight
+
+Before adding or moving Java domain types, complete a project-local marker inventory:
+
+1. Aggregate identifiers implement jMolecules `Identifier`.
+2. Ordinary immutable domain values implement jFoundry `ValueObject`.
+3. Aggregate roots extend `BaseAggregateRoot` when they record or persist domain events.
+4. Aggregate-local child entities extend `BaseEntity` when local identity is explicit.
+5. Domain facts implement jMolecules `DomainEvent`; use jFoundry `BaseDomainEvent` when event metadata and idempotency identity are required.
+6. Record explicit exceptions for domain services, history records, enums, and other types that must not receive one of those markers.
+
+Marker-based `ValueObjectRules` protect only classes that explicitly implement the marker. A project with no marked value objects can therefore produce a vacuous pass. Add a project-local marker coverage rule before relying on the framework rule set.
+
 Read `references/upstream-documentation.md` for exact annotation semantics and architecture-rule entrypoints. Read `references/testing.md` after selecting the shape.

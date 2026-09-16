@@ -59,6 +59,13 @@ Persisted workflow artifacts are this project's decision memory:
 Do not make full DDD, Hexagonal, CQRS, or framework landing mandatory for every increment. Do
 not bypass the applicable decision phase merely because a detailed plan would be quicker to write.
 
+When a task adds or moves domain/application/adapter types, adds a use case or port, or touches a
+package whose responsibilities have become mixed, the detailed plan must include the Package And Type Semantics Preflight from Architecture Guidance and convert its package, type-marker, and
+naming decisions into architecture tests before implementation proceeds. When a task adds or changes
+expected failures, exception mapping, retry classification, or client-visible errors, the plan must also
+include the Exception And Problem Contract Preflight from the JFoundry guidance and convert its
+decisions into exception, ProblemMapper, and runtime-mapping tests before implementation proceeds.
+
 ## Planning-Ready Handoff
 
 Before detailed planning, the handoff must identify:

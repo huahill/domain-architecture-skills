@@ -19,4 +19,20 @@ When aggregate persistence is selected, record a project-local aggregate invento
 - A MyBatis-Plus adapter for a single-root aggregate must use `MybatisPlusAggregateRepository` or the release-documented equivalent. A composite root-plus-dependents adapter must preserve complete synchronization and runtime weaving. A direct implementation must be an explicit recorded exception, not an untracked shortcut.
 - Add a focused runtime test when adapter behavior depends on transaction boundaries, persistence observers, or domain-event context wiring.
 
+## Domain type semantics and naming rules
+
+Record a project-local semantic inventory before writing marker or naming rules. At minimum, guard the selected meaning of `Identifier`, `ValueObject`, `BaseAggregateRoot`, `BaseEntity`, `DomainEvent`, `Request`, `Response`, `Repository`, `Store`, `QueryPort`, `Gateway`, `Port`, `Adapter`, and `Client` for the packages being changed.
+
+Marker-based rules can pass vacuously when no type carries the marker. Add a marker coverage assertion for the semantics the project actually uses, and record narrowly scoped migration exceptions with reasons. For example, non-ID, non-event domain records should implement `ValueObject` unless the inventory explicitly classifies them otherwise; `Gateway` should be an application outbound contract, while `Adapter` and `Client` remain outer-adapter implementation names.
+
 Architecture tests validate the project's selected meanings; they do not infer aggregate ownership from names alone. Read `references/upstream-documentation.md` for exact architecture-rule entrypoints and runtime test requirements.
+
+## Exception and problem mapping rules
+
+When failure behavior is selected, convert the Exception And Problem Contract Preflight into tests:
+
+- domain and application exception types extend `DomainException` or `ApplicationException`;
+- expected domain, application, and external-access failures map through the selected runtime, such as `ProblemDetailsExceptionHandler`;
+- application `ProblemMapper` beans are tested for custom problem types and extensions;
+- project `@RestControllerAdvice` / `@ControllerAdvice` declarations are forbidden unless a narrow legacy protocol compatibility exception is recorded;
+- scheduler, job, and outbound-result retry classification is tested without turning a generic exception into the durable retry contract.
