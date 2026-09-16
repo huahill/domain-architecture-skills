@@ -1,6 +1,6 @@
 {
   "name": "domain-architecture",
-  "version": "0.3.2+codex.20260916101133",
+  "version": "0.3.3+codex.20260916131556",
   "description": "Domain modeling and architecture workflow plugin for business software systems.",
   "author": {
     "name": "Huang Xiao",
@@ -25,7 +25,7 @@
     "shortDescription": "Domain modeling and architecture workflow skills",
     "longDescription": "A business-domain architecture plugin that coordinates domain modeling, source-aware architecture guidance, and optional jfoundry implementation guidance without depending on any external workflow plugin.",
     "developerName": "Huang Xiao",
-    "category": "Productivity",
+    "category": "Developer Tools",
     "capabilities": [
       "Domain Modeling",
       "Architecture Guidance",

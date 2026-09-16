@@ -15,6 +15,8 @@ codex plugin marketplace add huahill/domain-architecture-skills
 codex plugin add domain-architecture@huahill
 ```
 
+`plugin add` only works after the marketplace is added. If Codex reports that `domain-architecture` was not found in marketplace `huahill`, add the marketplace first and confirm `codex plugin list --marketplace huahill` shows the plugin.
+
 Confirm the plugin appears in `codex plugin list`, then start with this prompt:
 
 ```text
@@ -42,14 +44,6 @@ Use one source for the `huahill` marketplace name. To switch between a local che
 codex plugin marketplace remove huahill
 ```
 
-When upgrading an installation that still uses the former `xfoundries` marketplace, migrate it once:
-
-```bash
-codex plugin marketplace remove xfoundries
-codex plugin marketplace add huahill/domain-architecture-skills
-codex plugin add domain-architecture@huahill
-```
-
 ### Claude Code And Compatible Agents
 
 Claude Code can validate and install the same plugin source through its plugin system:
@@ -60,11 +54,7 @@ claude plugin marketplace add huahill/domain-architecture-skills
 claude plugin install domain-architecture@huahill
 ```
 
-Existing Claude Code installations should add the `huahill` marketplace and install
-`domain-architecture@huahill`; the former marketplace entry can then be removed through Claude
-Code's marketplace management.
-
-The repository also includes an [`.agents/plugins` marketplace manifest](.agents/plugins/marketplace.json) for compatible agents. Its `skills/` directory is plugin-internal; install the `domain-architecture` plugin rather than copying individual skills.
+The repository also includes an [`.agents/plugins` marketplace manifest](.agents/plugins/marketplace.json) for compatible agents. The repository `skills/` directory is plugin-internal; install the `domain-architecture` plugin rather than copying individual skills.
 
 ## What It Does
 
@@ -79,7 +69,7 @@ requirements
 -> detailed planning or the selected process companion
 ```
 
-The handoff preserves specialist results, decisions, constraints, open questions, and blockers. It identifies the smallest planning-ready increment and its next owner; it is planning input, not a detailed implementation plan. Persisted `docs/domain-architecture/` artifacts are this project's decision memory: they must not copy specialist tutorials, and they do not replace specialist skills. When implementing a decided capability such as persistence, re-invoke the owning specialist even if that phase is already completed. The workflow supports a versioned machine-readable handoff contract with stable identity, revisions, dependency-scoped blockers, artifact references, accepted-assumption evidence, and planning-readiness metadata. Markdown remains the human-readable projection, and existing text-only consumers remain compatible. Persisted workflow artifacts use `docs/domain-architecture/`, and standalone detailed plans use its `plans/` child directory.
+The handoff preserves specialist results, decisions, constraints, open questions, and blockers. It identifies the smallest planning-ready increment and its next owner; it is planning input, not a detailed implementation plan. Persisted `docs/domain-architecture/` artifacts are the target business project's decision memory: they must not copy specialist tutorials, and they do not replace specialist skills. When implementing a decided capability such as persistence, re-invoke the owning specialist even if that phase is already completed. The workflow supports a versioned machine-readable handoff contract with stable identity, revisions, dependency-scoped blockers, artifact references, accepted-assumption evidence, and planning-readiness metadata. Markdown remains the human-readable projection, and existing text-only consumers remain compatible. Persisted workflow artifacts use `docs/domain-architecture/`, and standalone detailed plans use its `plans/` child directory.
 
 | Need | Entry point |
 |---|---|
@@ -100,9 +90,9 @@ The handoff preserves specialist results, decisions, constraints, open questions
 ## Advanced Use
 
 - `using-jfoundry` applies only after jfoundry is confirmed or explicitly requested. An undecided framework does not block framework-neutral modeling and architecture guidance. Its [architecture landing](skills/using-jfoundry/references/architecture.md) preserves the selected style rather than choosing one.
-- Before aggregate persistence implementation, `using-jfoundry` requires a project-local **Aggregate Persistence Preflight** and repository-semantics architecture rules. The preflight separates aggregate lifecycle repositories from non-aggregate read, store, CAS, lease, and history contracts; see [persistence guidance](skills/using-jfoundry/references/persistence-data-mappers.md) and [testing guidance](skills/using-jfoundry/references/testing.md).
+- Before aggregate persistence implementation, `using-jfoundry` requires a project-local **Aggregate Persistence Preflight** and repository-semantics architecture rules. The preflight separates aggregate lifecycle repositories from non-aggregate read, store, CAS, lease, and history contracts; see [persistence guidance](skills/using-jfoundry/references/persistence-data-mappers.md), [repository contracts](skills/using-jfoundry/references/repository-and-read-contracts.md), and [testing guidance](skills/using-jfoundry/references/testing.md).
 - A process companion such as Superpowers, SpecKit, or OpenSpec is optional and user-selected. It owns its own specifications, plans, tasks, implementation, review, files, and commands; this plugin owns the specialist results and handoff. The [first-use guide](skills/domain-architecture-workflow/references/first-use.md) defines the input, ownership, status, and return rules.
-- The structured handoff contract is additive: it does not replace specialist result ownership or require a workflow engine. The repository includes standard-library tools to validate a handoff, create a blocker-resolution revision, and render summary/full Markdown views; database persistence and distributed recovery remain outside this phase. The contract is documented in [handoff-contract.md](skills/domain-architecture-workflow/references/handoff-contract.md) and defined by [its JSON Schema](schemas/domain-architecture-handoff.schema.json).
+- The structured handoff contract is additive: it does not replace specialist result ownership or require a workflow engine. The repository includes standard-library tools in `scripts/` to validate a handoff, create a blocker-resolution revision, and render summary/full Markdown views; database persistence and distributed recovery remain outside this phase. The contract is documented in [handoff-contract.md](skills/domain-architecture-workflow/references/handoff-contract.md) and defined by [its JSON Schema](schemas/domain-architecture-handoff.schema.json).
 - Handoff consumers can request a summary or full projection. Persisted artifacts may declare a sensitivity classification and redaction requirement; process companions consume the contract and references but retain ownership of their own plans and execution state.
 - Selected architecture styles retain their own constraints. Aggregate repositories, adapter vocabulary, integration contracts, and reliable messaging are governed by the [architecture constraints](skills/domain-architecture-guidance/references/architecture-constraints.md) and the applicable specialist references; the plugin does not infer those choices from package names or available framework features.
 
@@ -126,6 +116,8 @@ The plugin distinguishes DDD modeling concepts from architecture style constrain
   plugin.json
 .agents/plugins/
   marketplace.json
+schemas/
+scripts/
 skills/
   domain-architecture-workflow/
   domain-modeling/
@@ -138,9 +130,6 @@ skills/
 For local development, keep the marketplace source pointed at this repository. After changing plugin metadata, reinstall or update the plugin in the target agent so it refreshes cached metadata.
 
 The plugin uses one SemVer release version across the Codex and Claude manifests. Backward-compatible capabilities increment `MINOR`, compatible fixes increment `PATCH`, and incompatible public contracts increment `MAJOR` after `1.0.0` (or the next `MINOR` before `1.0.0`). Release tags use `domain-architecture--v<version>`.
-
-Version `0.3.0` moves the repository and marketplace identity from `xfoundries` to `huahill`.
-Existing installations must apply the marketplace migration described in Quick Start.
 
 For Codex, `.codex-plugin/plugin.json` appends `+codex.<cachebuster>` to that release version. Refresh this suffix when changed plugin content or metadata must invalidate the Codex cache; do not increment the release version only for cache refresh. Then reinstall from `domain-architecture@huahill`.
 

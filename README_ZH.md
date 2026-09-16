@@ -15,6 +15,8 @@ codex plugin marketplace add huahill/domain-architecture-skills
 codex plugin add domain-architecture@huahill
 ```
 
+`plugin add` 必须在市场已经添加之后才能使用。如果 Codex 提示在 `huahill` 市场中找不到插件，请先执行 `codex plugin marketplace add`，再用 `codex plugin list --marketplace huahill` 确认插件已出现。
+
 通过 `codex plugin list` 确认插件已出现，然后直接发送：
 
 ```text
@@ -42,14 +44,6 @@ codex plugin add domain-architecture@huahill
 codex plugin marketplace remove huahill
 ```
 
-如果现有安装仍然使用原来的 `xfoundries` 市场，请执行一次迁移：
-
-```bash
-codex plugin marketplace remove xfoundries
-codex plugin marketplace add huahill/domain-architecture-skills
-codex plugin add domain-architecture@huahill
-```
-
 ### Claude Code 与兼容的智能体
 
 Claude Code 可以校验并安装同一个插件源码：
@@ -59,9 +53,6 @@ claude plugin validate .
 claude plugin marketplace add huahill/domain-architecture-skills
 claude plugin install domain-architecture@huahill
 ```
-
-已有的 Claude Code 安装应添加 `huahill` 市场并安装 `domain-architecture@huahill`，然后通过
-Claude Code 的市场管理功能移除原来的市场条目。
 
 仓库还提供适用于兼容智能体的 [`.agents/plugins` 市场清单](.agents/plugins/marketplace.json)。`skills/` 是插件内部能力，应安装 `domain-architecture` 插件，而非单独复制技能。
 
@@ -78,7 +69,7 @@ Claude Code 的市场管理功能移除原来的市场条目。
 -> 详细规划或用户选定的流程伴侣
 ```
 
-交接会保留专业结果、决策、约束、开放问题和阻塞项，并标明最小的规划就绪增量及其下一步所有者；它是规划输入，不是详细实施计划。持久化的 `docs/domain-architecture/` 产物是本项目的决策记忆：不要把专业技能教程抄进去，也不要用它替代技能本身。实施已决定的能力（例如持久化）时，即使该阶段已经 `completed`，也要重新调用对应的专业技能。工作流支持带版本的机器可读交接契约，其中包含稳定身份、修订版本、按依赖范围划分的阻塞项、产物引用、带接受证据的假设以及规划就绪元数据。Markdown 仍然是便于人工评审的投影，已有只理解文本交接的消费方仍可兼容。持久化的工作流产物位于 `docs/domain-architecture/`，独立详细计划位于其 `plans/` 子目录。
+交接会保留专业结果、决策、约束、开放问题和阻塞项，并标明最小的规划就绪增量及其下一步所有者；它是规划输入，不是详细实施计划。持久化的 `docs/domain-architecture/` 产物是目标业务项目的决策记忆：不要把专业技能教程抄进去，也不要用它替代技能本身。实施已决定的能力（例如持久化）时，即使该阶段已经 `completed`，也要重新调用对应的专业技能。工作流支持带版本的机器可读交接契约，其中包含稳定身份、修订版本、按依赖范围划分的阻塞项、产物引用、带接受证据的假设以及规划就绪元数据。Markdown 仍然是便于人工评审的投影，已有只理解文本交接的消费方仍可兼容。持久化的工作流产物位于 `docs/domain-architecture/`，独立详细计划位于其 `plans/` 子目录。
 
 | 需求 | 入口 |
 |---|---|
@@ -99,9 +90,9 @@ Claude Code 的市场管理功能移除原来的市场条目。
 ## 进阶使用
 
 - 只有在确认或明确要求 jfoundry 时才使用 `using-jfoundry`；框架尚未决定不会阻塞框架中立的领域建模和架构指导。其[架构落地说明](skills/using-jfoundry/references/architecture.md)保留已选架构风格，而不是替项目选择一种风格。
-- 实施聚合持久化前，`using-jfoundry` 要求完成项目局部的 **Aggregate Persistence Preflight**，并建立仓储语义架构规则。该预检把聚合生命周期仓储与非聚合的读取、存储、CAS、租约和历史契约区分开；参见[持久化指导](skills/using-jfoundry/references/persistence-data-mappers.md)和[测试指导](skills/using-jfoundry/references/testing.md)。
+- 实施聚合持久化前，`using-jfoundry` 要求完成项目局部的 **Aggregate Persistence Preflight**，并建立仓储语义架构规则。该预检把聚合生命周期仓储与非聚合的读取、存储、CAS、租约和历史契约区分开；参见[持久化指导](skills/using-jfoundry/references/persistence-data-mappers.md)、[仓储契约](skills/using-jfoundry/references/repository-and-read-contracts.md)和[测试指导](skills/using-jfoundry/references/testing.md)。
 - Superpowers、SpecKit、OpenSpec 等流程伴侣是可选且由用户选择的。它们拥有自身的规格、规划、任务、实施、评审、文件和命令；本插件拥有专业结果和交接。[首次使用指南](skills/domain-architecture-workflow/references/first-use.md)定义了输入、责任归属、状态和返回规则。
-- 结构化交接契约以增量方式加入，不改变专业结果的所有权，也不要求工作流引擎。仓库现在提供基于标准库的交接校验、阻塞项解决后生成新修订版本，以及摘要/完整 Markdown 投影工具；数据库持久化和分布式恢复仍不在当前阶段。当前契约见 [handoff-contract.md](skills/domain-architecture-workflow/references/handoff-contract.md)，其 JSON Schema 见[这里](schemas/domain-architecture-handoff.schema.json)。
+- 结构化交接契约以增量方式加入，不改变专业结果的所有权，也不要求工作流引擎。仓库在 `scripts/` 中提供基于标准库的交接校验、阻塞项解决后生成新修订版本，以及摘要/完整 Markdown 投影工具；数据库持久化和分布式恢复仍不在当前阶段。当前契约见 [handoff-contract.md](skills/domain-architecture-workflow/references/handoff-contract.md)，其 JSON Schema 见[这里](schemas/domain-architecture-handoff.schema.json)。
 - 交接消费方可以请求摘要或完整投影。持久化产物可以声明敏感性分类和脱敏要求；流程伴侣消费契约和引用，但仍然拥有自己的规划与执行状态。
 - 已选择的架构风格保留自身约束。聚合仓储、适配器词汇、集成契约和可靠消息应遵循[架构约束](skills/domain-architecture-guidance/references/architecture-constraints.md)及适用的专业参考资料；插件不会根据包名或可用框架能力推断这些选择。
 
@@ -125,6 +116,8 @@ Claude Code 的市场管理功能移除原来的市场条目。
   plugin.json
 .agents/plugins/
   marketplace.json
+schemas/
+scripts/
 skills/
   domain-architecture-workflow/
   domain-modeling/
@@ -134,11 +127,9 @@ skills/
 
 ## 更新
 
-本地开发时，保持目标智能体的 marketplace 源指向本仓库即可。修改插件元数据后，在目标智能体中重新安装或更新插件，让它刷新缓存。
+本地开发时，保持目标智能体的市场源指向本仓库即可。修改插件元数据后，在目标智能体中重新安装或更新插件，让它刷新缓存。
 
 Codex 与 Claude 清单共享同一个 SemVer 发布版本。向后兼容的新能力递增 `MINOR`，兼容性修复递增 `PATCH`；`1.0.0` 之后的不兼容公共契约变更递增 `MAJOR`，`1.0.0` 之前则递增下一个 `MINOR`。发布标签使用 `domain-architecture--v<version>`。
-
-`0.3.0` 版本将仓库和市场标识从 `xfoundries` 迁移到 `huahill`。现有安装必须按照“快速开始”中的说明迁移市场。
 
 Codex 的 `.codex-plugin/plugin.json` 会在发布版本后追加 `+codex.<cachebuster>`。当插件内容或元数据变化并需要使 Codex 缓存失效时，只刷新该后缀；不要仅为刷新缓存而递增发布版本。之后从 `domain-architecture@huahill` 重新安装。
 
