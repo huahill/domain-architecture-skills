@@ -70,6 +70,7 @@ class JFoundryGuidanceTests(unittest.TestCase):
                 "`@RestControllerAdvice` / `@ControllerAdvice`",
                 "legacy protocol compatibility",
                 "retryability",
+                "polling, reconciliation, and recovery loop",
                 "architecture test",
         ):
             self.assertIn(required, text)
@@ -84,6 +85,7 @@ class JFoundryGuidanceTests(unittest.TestCase):
                 "@ControllerAdvice",
                 "ProblemDetailsExceptionHandler",
                 "ProblemMapper",
+                "log-and-continue semantics",
         ):
             self.assertIn(required, text)
 

@@ -47,6 +47,7 @@ Transport parsing and bean validation belong to the primary adapter. Use the sel
 - Do not add runtime persistence-exception dependencies to application or domain code.
 - Represent expected remote outcomes such as absence, business rejection, or conflict in the outbound contract result. The application interprets them as the selected release's absence, conflict, or domain outcome as appropriate; they are not automatically technical-access failures.
 - Let expected domain and application exceptions pass through without indiscriminate wrapping.
+- Apply passthrough only where the selected behavior is to translate or propagate a failure. A polling, reconciliation, or recovery loop whose selected semantics are log-and-continue must continue to the next item for both framework-classified failures and unrelated runtime failures; do not turn passthrough guidance into an unselected batch abort.
 - Leave unexpected programming and configuration defects unexpected so runtime handling can produce a server error and diagnostic logging. Do not disguise them as business, invalid-input, or technical-access outcomes.
 - Do not put credentials, tokens, connection strings, personal data, or other secrets in exception messages.
 
@@ -60,28 +61,6 @@ For Spring MVC HTTP APIs, resolve the selected release's supported web assembly 
 - Test application services for invalid input, absence, conflict, and expected remote-outcome interpretation.
 - Test that a known technical client or driver failure becomes the selected technical-access outcome with the identical cause.
 - Test that expected domain/application exceptions pass through and unrelated programming defects remain unwrapped.
-- Convert the inventory to an architecture test that prevents a parallel business-exception hierarchy and unapproved advice.
-- Test the selected runtime's documented HTTP mappings, verify raw external details are absent where the mapper promises that protection, and keep client-visible exception messages safe.
-
-
-- Domain code must not depend on application exceptions or HTTP concepts. Do not force a domain-owned port to depend on application exceptions. Prefer loading external data in the application service and passing the value into the domain model; when a domain-owned port is justified, express failures through domain-meaningful contract semantics.
-- At an application-owned outbound contract boundary, an infrastructure implementation catches known client or driver exceptions, preserves the cause, and raises the selected release's technical-access outcome when the contract expects it. In Hexagonal Architecture this is normally an outbound contract and adapter boundary; Onion does not require those role names. Do not catch broad exceptions for this translation.
-- Use the selected release's documented persistence-failure translation boundary. Translate a duplicate key to the application-conflict outcome only when the adapter can identify the violated constraint as the intended business conflict. Do not treat every duplicate or integrity failure in a multi-table aggregate as “aggregate already exists.”
-- Do not add runtime persistence-exception dependencies to application or domain code.
-- Represent expected remote outcomes such as absence, business rejection, or conflict in the outbound contract result. The application interprets them as the selected release's absence, conflict, or domain outcome as appropriate; they are not automatically technical-access failures.
-- Let expected domain and application exceptions pass through without indiscriminate wrapping.
-- Leave unexpected programming and configuration defects unexpected so runtime handling can produce a server error and diagnostic logging. Do not disguise them as business, invalid-input, or technical-access outcomes.
-- Do not put credentials, tokens, connection strings, personal data, or other secrets in exception messages.
-
-## Spring MVC Boundary
-
-For Spring MVC HTTP APIs, resolve the selected release's supported web assembly and exception mapper from its runtime guide. HTTP status and response shape remain primary-adapter concerns; domain and application code should not select status codes. Prefer the runtime-provided `ProblemDetailsExceptionHandler`; add a `ProblemMapper` for stable application problem extensions before considering advice. Verify the release's mappings and client-visible detail policy before relying on them. Never include secrets or raw external-system details in client-visible messages.
-
-## Testing
-
-- Unit-test domain rules and lifecycle guards for the expected domain exception type.
-- Test application services for invalid input, absence, conflict, and expected remote-outcome interpretation.
-- Test that a known technical client or driver failure becomes the selected technical-access outcome with the identical cause.
-- Test that expected domain/application exceptions pass through and unrelated programming defects remain unwrapped.
+- Test polling, reconciliation, and recovery loops for their selected recovery semantics, including a framework-classified failure and an unrelated runtime failure.
 - Convert the inventory to an architecture test that prevents a parallel business-exception hierarchy and unapproved advice.
 - Test the selected runtime's documented HTTP mappings, verify raw external details are absent where the mapper promises that protection, and keep client-visible exception messages safe.

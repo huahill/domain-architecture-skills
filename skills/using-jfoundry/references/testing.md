@@ -36,3 +36,4 @@ When failure behavior is selected, convert the Exception And Problem Contract Pr
 - application `ProblemMapper` beans are tested for custom problem types and extensions;
 - project `@RestControllerAdvice` / `@ControllerAdvice` declarations are forbidden unless a narrow legacy protocol compatibility exception is recorded;
 - scheduler, job, and outbound-result retry classification is tested without turning a generic exception into the durable retry contract.
+- polling, reconciliation, and recovery loops retain their selected log-and-continue semantics for both framework-classified failures and unrelated runtime failures.
