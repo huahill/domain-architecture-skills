@@ -177,6 +177,31 @@ class JFoundryGuidanceTests(unittest.TestCase):
         ):
             self.assertIn(required, text)
 
+    def test_using_jfoundry_agents_forbid_duplicating_versioned_facts(self):
+        text = (USING_JFOUNDRY / "AGENTS.md").read_text(encoding="utf-8")
+        for required in (
+            "consumption contract",
+            "Three Layers",
+            "domain-architecture-guidance",
+            "Versioned framework fact",
+            "method signatures",
+            "selected jfoundry release",
+            "project-local",
+        ):
+            self.assertIn(required, text)
+
+    def test_root_agents_keep_using_jfoundry_from_copying_jfoundry(self):
+        text = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        for required in (
+            "thin consumption contract",
+            "versioned framework facts",
+            "skills/using-jfoundry/AGENTS.md",
+            "project-local workarounds",
+        ):
+            self.assertIn(required, text)
+
+
+
 
 if __name__ == "__main__":
     unittest.main()
