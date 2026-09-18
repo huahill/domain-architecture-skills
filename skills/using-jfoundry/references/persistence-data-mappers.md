@@ -32,7 +32,7 @@ Do not override public lifecycle methods on jfoundry repository bases. Use their
 - Keep domain IDs as strong jMolecules identifiers and convert them at the adapter boundary.
 - Keep persistence mapping infrastructure-local. A MapStruct mapper may be used, but aggregate restoration must remain explicit.
 - Keep aggregate load, domain behavior, and modify/remove in one transaction. Do not assume detached aggregate merge support.
-- jFoundry `findById` / `findByIdForUpdate` on a versioned aggregate requires an active runtime transaction. Worker and scheduler handlers must open a short `UnitOfWork` around that load; HTTP use cases may use a `Transactional*` decorator. Do not keep the transaction open across outbound HTTP.
+- jFoundry `findById` / `findByIdForUpdate` on a versioned aggregate requires an active runtime transaction. Inject the selected runtime's `TransactionRunner` for that short boundary; HTTP use cases may use a `Transactional*` decorator. Do not invent `UnitOfWork` ports, and do not keep the transaction open across outbound HTTP.
 - If the use case only needs codes or identity for an external call, prefer a lookup or snapshot contract over `AggregateRepository.findById`.
 - A JPA aggregate is one managed entity graph. For JPA optimistic locking, put `@Version` on the graph root and ensure child-only changes participate according to the selected provider's rules.
 - For MyBatis-Plus optimistic locking, put `@Version` on the root data object, configure the interceptor, and select tracked persistence only when the repository shape supports it.

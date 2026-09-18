@@ -139,7 +139,8 @@ class JFoundryGuidanceTests(unittest.TestCase):
             "Repository suffix",
             "AggregateRepository.findById",
             "Transactional*",
-            "UnitOfWork",
+            "TransactionRunner",
+            "project-local transaction port",
         ):
             self.assertIn(required, text)
 
@@ -147,6 +148,7 @@ class JFoundryGuidanceTests(unittest.TestCase):
         text = PERSISTENCE.read_text(encoding="utf-8")
         for required in (
             "findById",
+            "TransactionRunner",
             "UnitOfWork",
             "Transactional*",
             "outbound HTTP",
@@ -158,7 +160,7 @@ class JFoundryGuidanceTests(unittest.TestCase):
         text = REPOSITORIES.read_text(encoding="utf-8")
         for required in (
             "tracked load",
-            "unit of work",
+            "TransactionRunner",
             "lookup contract",
         ):
             self.assertIn(required, text)

@@ -14,7 +14,7 @@ Use this reference only when a project explicitly selects Spring Framework, Spri
 
 ## Application Boundaries
 
-Use a transaction boundary only for an application workflow that requires atomic changes. Keep it in application orchestration, whether the project uses a framework-neutral `TransactionRunner` or a selected Spring integration. Keep aggregate load and tracked modification in the same transaction.
+Use a transaction boundary only for an application workflow that requires atomic changes. Keep it in application orchestration by injecting jFoundry `TransactionRunner` from `jfoundry-transaction-core` (Spring Boot auto-configures `SpringTransactionRunner`). Do not create a project-local `UnitOfWork` or per-bounded-context transaction port: Java/Spring code talks about transactions, not Unit of Work. Keep aggregate load and tracked modification in the same transaction. HTTP entrypoints may wrap a use case with a `Transactional*` decorator; workers must call `TransactionRunner` for the short database section and keep outbound HTTP outside it.
 
 For Spring MVC, HTTP response mapping remains a primary-adapter concern. Domain and application code select domain/application outcomes, not HTTP status codes. Use the selected release's web integration only when the project chooses its problem-response mapping.
 
