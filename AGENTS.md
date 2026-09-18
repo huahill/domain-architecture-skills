@@ -49,12 +49,72 @@ Do not collapse DDD, Layered, Onion, Hexagonal / Ports and Adapters, CQRS, Event
 - Keep optional context-map artifacts owned by `domain-modeling`. The coordinator may preserve or reference `02-context-map.md`, but should not reconstruct the specialist payload or create a parallel context map.
 - Keep `domain-architecture-guidance` source-aware. `references/source-policy.md` remains authoritative for source hierarchy.
 - Keep `using-jfoundry` jfoundry-specific. Do not move general DDD methodology into it.
-- Keep `using-jfoundry` a thin consumption contract for business projects: capability selection, architecture landing, anti-reinvention, and routing to the selected JFoundry release. It must not copy versioned framework facts such as Maven coordinates, properties, method signatures, exception models, auto-configuration behavior, or runtime diagnostics. Those belong in the selected jfoundry release documentation.
-- Keep framework-neutral package, command/query, and type-semantics rules in `domain-architecture-guidance`. Do not grow `using-jfoundry` into a second architecture skill or a lagging copy of the jfoundry manual.
-- After a business-project incident, classify the finding before editing skills. Patch jfoundry when the framework is the source of truth; patch `using-jfoundry` only for a stable downstream consumption contract; leave project-local workarounds out of the plugin. Follow `skills/using-jfoundry/AGENTS.md` when changing that skill.
+- Keep `using-jfoundry` a thin consumption contract for business projects. See **using-jfoundry Maintenance**.
 - Skip `using-jfoundry` for non-jfoundry projects and record why no framework landing applies in the composite handoff; do not invoke the specialist merely to produce a `not-applicable` result. When jfoundry use is undecided, do not invoke the specialist or block framework-neutral Domain Modeling and Architecture Guidance. Defer the choice until a framework-specific next activity materially requires it, and record the pending optional landing in the handoff.
 - Do not make this repository depend on Superpowers, OpenSpec, SpecKit, or any other external process framework. They may be described only as optional companions selected by the user or already active in the project.
 - Keep remote protocol translation in the business project's infrastructure adapter. Expected remote absence, conflict, and business rejection belong in the Port result; only known technical failures at an application-owned secondary Port are candidates for `ExternalAccessException` translation. Preserve the original cause, and log it at that translation boundary whenever the failure will not reach the runtime HTTP exception handler.
+
+## using-jfoundry Maintenance
+
+`using-jfoundry` is a consumption contract for downstream business projects. It is not a jfoundry
+manual, not a second architecture skill, and not a place to freeze one project's incident into a
+universal rule. Keep these instructions in this repository-root `AGENTS.md`; do not add a per-skill
+`AGENTS.md`.
+
+### Three Layers
+
+Classify every finding before editing. Put it in one layer only.
+
+| Layer | Owner | Ask | Typical content |
+|---|---|---|---|
+| Modeling and architecture | `domain-modeling`, `domain-architecture-guidance` | What is the model, and which architecture style applies? | Bounded contexts, package roles, Command/Query/Result semantics, Value Object vs Entity |
+| Consumption contract | `using-jfoundry` | How should a business project use the selected jfoundry release? | Capability selection, landing after an architecture is chosen, anti-reinvention, routing, project-side ArchUnit obligations |
+| Versioned framework fact | selected jfoundry release documentation or source | What is true of this jfoundry version? | Maven coordinates, properties, method signatures, exception mechanics, auto-configuration, runtime diagnostics, compatibility matrices, starter catalogues |
+
+If a sentence would have to change when jfoundry ships a new minor or patch, it is a versioned
+framework fact. Document it in jfoundry, then keep only a pointer in `using-jfoundry`.
+
+Keep in `using-jfoundry`:
+
+- Whether a capability is selected, and where it lands in the already chosen architecture.
+- What the project must not reinvent, named as a stable contract rather than an API walkthrough.
+  Examples: do not invent a `UnitOfWork` port; do not create a parallel business-exception hierarchy;
+  do not name every persistence adapter a `Repository`.
+- Version-aware routing to the selected JFoundry release documentation.
+- Project-side verification that the consumption contract is kept, such as ArchUnit obligations.
+
+Do not keep in `using-jfoundry`:
+
+- Maven coordinates, BOM versions, starter lists, or compatibility matrices.
+- Configuration properties, auto-configuration class names, or Native Image hints.
+- Method signatures, checked-versus-unchecked exception declarations, or call sequences.
+- Runtime internals such as whether an HTTP exception handler logs a cause.
+- A project-local incident, investigation, or workaround, unless it has become a stable downstream
+  contract that every affected project must follow.
+
+Stable JFoundry type names may appear when they identify a landing or an anti-reinvention rule
+(`TransactionRunner`, `DomainException`, `AggregateRepository`). Route their exact semantics and
+version-specific mechanics to the selected release documentation. Prefer “use the selected
+release's `TransactionRunner`; do not wrap it” over copying `run` / `call` signatures or exception
+models into the skill.
+
+Keep framework-neutral package, command/query, and type-semantics rules in
+`domain-architecture-guidance`. Do not grow `using-jfoundry` into a second architecture skill or a
+lagging copy of the jfoundry manual.
+
+Before adding or tightening guidance after a project incident:
+
+1. Classify the finding against the three layers above. Do not patch `using-jfoundry` by default.
+2. If the framework is incomplete or misleading, change jfoundry documentation or code first. The
+   skill may then add a route or an anti-reinvention sentence, not a copy of the new API.
+3. If the finding is framework-neutral architecture, edit `domain-architecture-guidance` or
+   `domain-modeling` instead.
+4. If the finding is project-local, leave it in that project. Do not promote it into the plugin.
+5. Reject a draft sentence that contains a method name, property key, exception package, starter
+   coordinate, or “this project just hit”, unless the method or type name is required to name a
+   consumption contract and the mechanics are routed upstream.
+6. After a jfoundry API or runtime change, update jfoundry first, then delete any copied fact from
+   `using-jfoundry` rather than chasing the new signature there.
 
 ## Source Policy
 
@@ -79,6 +139,7 @@ Do not treat Clean Architecture as a wholly new, standalone architecture. Use it
 - Keep each skill's `SKILL.md` concise. Put detailed guidance in that skill's `references/`.
 - Keep references one level below the skill directory and link them directly from `SKILL.md`.
 - Keep examples short and labeled as sketches. They should demonstrate translation choices, not prescribe a universal project template.
+- Keep plugin maintenance instructions in this repository-root `AGENTS.md`. Do not add per-skill `AGENTS.md` files.
 - Preserve the distinction between foundational sources, implementation guidance, opinionated synthesis, and framework conventions.
 - Preserve architecture constraints when a project explicitly chooses Layered, Onion, Hexagonal / Ports and Adapters, or CQRS.
 - Do not introduce universal rules such as mandatory CQRS, mandatory Event Sourcing, mandatory repository abstractions, mandatory folder structures, or mandatory jfoundry adoption.
@@ -152,6 +213,6 @@ Before publishing, check:
 - `domain-architecture-guidance/references/source-policy.md` explains source hierarchy and cautions around Explicit Architecture and Clean Architecture.
 - `domain-architecture-guidance/references/architecture-constraints.md` separates DDD modeling concepts from Layered, Onion, Hexagonal / Ports and Adapters, and CQRS structural rules.
 - `using-jfoundry` remains a downstream business project skill, not a framework-maintenance skill.
-- `using-jfoundry/AGENTS.md` forbids duplicating versioned JFoundry implementation facts and requires routing them to the selected release.
+- This `AGENTS.md` forbids `using-jfoundry` from duplicating versioned JFoundry implementation facts and requires routing them to the selected release.
 - `using-jfoundry/references/exception-handling.md` distinguishes expected remote outcomes from technical access failures and keeps business protocol interpretation out of jfoundry core.
 - `README.md` and `README_ZH.md` mention all shipped skills.
