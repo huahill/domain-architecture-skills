@@ -137,6 +137,29 @@ class JFoundryGuidanceTests(unittest.TestCase):
             "MybatisPlusAggregateRepository",
             "direct implementation",
             "Repository suffix",
+            "AggregateRepository.findById",
+            "Transactional*",
+            "UnitOfWork",
+        ):
+            self.assertIn(required, text)
+
+    def test_persistence_reference_requires_transaction_boundary_for_tracked_loads(self):
+        text = PERSISTENCE.read_text(encoding="utf-8")
+        for required in (
+            "findById",
+            "UnitOfWork",
+            "Transactional*",
+            "outbound HTTP",
+            "lookup or snapshot contract",
+        ):
+            self.assertIn(required, text)
+
+    def test_repository_reference_distinguishes_tracked_loads_from_lookups(self):
+        text = REPOSITORIES.read_text(encoding="utf-8")
+        for required in (
+            "tracked load",
+            "unit of work",
+            "lookup contract",
         ):
             self.assertIn(required, text)
 

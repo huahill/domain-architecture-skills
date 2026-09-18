@@ -20,6 +20,7 @@ In Hexagonal projects, use primary/secondary port terminology where it clarifies
 - Query contracts and views belong to the application capability, not the domain or infrastructure implementation.
 - Split lookup, query, and maintenance contracts only when their consumers, result shapes, consistency expectations, or change reasons differ.
 - Primary adapters invoke an application boundary. They do not call aggregate repositories or query implementations directly.
+- Command-side `AggregateRepository.findById` is a tracked load, not a generic query. Call it only inside a unit of work or transactional use-case decorator. External SDK or HTTP preparation that does not mutate the aggregate belongs on a lookup contract.
 - Do not enable CQRS only because a method reads data; use it when command and read models genuinely diverge.
 
 Read `references/persistence-data-mappers.md` and complete its **Aggregate Persistence Preflight** when implementing the outer persistence adapter. Read `references/upstream-documentation.md` for exact repository base contracts.
