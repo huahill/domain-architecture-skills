@@ -156,15 +156,17 @@ class JFoundryGuidanceTests(unittest.TestCase):
         ):
             self.assertIn(required, text)
 
-    def test_spring_runtime_requires_transaction_runner_unchecked_methods(self):
+    def test_spring_runtime_requires_transaction_runner_methods(self):
         text = (USING_JFOUNDRY / "references" / "spring-runtime.md").read_text(encoding="utf-8")
         for required in (
             "TransactionRunner",
-            "runUnchecked",
-            "callUnchecked",
+            "`run` / `call`",
             "UnitOfWork",
+            "`Transactions` helper",
         ):
             self.assertIn(required, text)
+        self.assertNotIn("runUnchecked", text)
+        self.assertNotIn("callUnchecked", text)
 
     def test_repository_reference_distinguishes_tracked_loads_from_lookups(self):
         text = REPOSITORIES.read_text(encoding="utf-8")
