@@ -11,7 +11,8 @@ Before adding or restructuring failure behavior, inventory and decide:
 3. outbound technical access failures versus expected remote business results;
 4. stable retry semantics and where retryability is interpreted;
 5. client-visible problem types, statuses, details, and extensions;
-6. whether the selected JFoundry runtime already maps those failures through `ProblemDetailsExceptionHandler` and `ProblemMapper`.
+6. whether the selected JFoundry runtime already maps those failures through `ProblemDetailsExceptionHandler` and `ProblemMapper`;
+7. where translated technical failures will be observed: HTTP exception handler, task/worker result, polling/reconcile loop, or log-and-continue. Preserving a cause is not the same as emitting a diagnostic log.
 
 A project-specific exception may add stable business vocabulary only when it extends `DomainException` or `ApplicationException` from the selected release. Do not create a parallel business-exception hierarchy around `RuntimeException`. If jFoundry and a runtime framework already express an outcome, use that outcome unless the subtype adds a stable domain name.
 
@@ -43,6 +44,7 @@ Transport parsing and bean validation belong to the primary adapter. Use the sel
 
 - Domain code must not depend on application exceptions or HTTP concepts. Do not force a domain-owned port to depend on application exceptions. Prefer loading external data in the application service and passing the value into the domain model; when a domain-owned port is justified, express failures through domain-meaningful contract semantics.
 - At an application-owned outbound contract boundary, an infrastructure implementation catches known client or driver exceptions, preserves the cause, and raises the selected release's technical-access outcome when the contract expects it. In Hexagonal Architecture this is normally an outbound contract and adapter boundary; Onion does not require those role names. Do not catch broad exceptions for this translation.
+- Log the original cause at that same translation boundary when the translated failure will not reach the runtime HTTP exception handler. JFoundry's `ProblemDetailsExceptionHandler` logs `ExternalAccessException` only for HTTP requests. Task handlers, schedulers, polling, reconciliation, and other log-and-continue loops must not rely on it. Keep one ERROR log with the SDK/driver cause at the adapter or project translation function; do not log in domain code, exception constructors, or client-visible problem details. Stable business codes belong in workflow/API results; the raw stack belongs in server logs. Do not put secrets in either place.
 - Use the selected release's documented persistence-failure translation boundary. Translate a duplicate key to the application-conflict outcome only when the adapter can identify the violated constraint as the intended business conflict. Do not treat every duplicate or integrity failure in a multi-table aggregate as “aggregate already exists.”
 - Do not add runtime persistence-exception dependencies to application or domain code.
 - Represent expected remote outcomes such as absence, business rejection, or conflict in the outbound contract result. The application interprets them as the selected release's absence, conflict, or domain outcome as appropriate; they are not automatically technical-access failures.
@@ -55,11 +57,14 @@ Transport parsing and bean validation belong to the primary adapter. Use the sel
 
 For Spring MVC HTTP APIs, resolve the selected release's supported web assembly and exception mapper from its runtime guide. HTTP status and response shape remain primary-adapter concerns; domain and application code should not select status codes. Prefer the runtime-provided `ProblemDetailsExceptionHandler`; add a `ProblemMapper` for stable application problem extensions before considering advice. Verify the release's mappings and client-visible detail policy before relying on them. Never include secrets or raw external-system details in client-visible messages.
 
+The HTTP handler is not a general diagnostic bus. If an outbound translation is converted into a task result, port result, or swallowed by a recovery loop, log the cause at translation time even though the HTTP handler would have logged the same exception on a request thread.
+
 ## Testing
 
 - Unit-test domain rules and lifecycle guards for the expected domain exception type.
 - Test application services for invalid input, absence, conflict, and expected remote-outcome interpretation.
 - Test that a known technical client or driver failure becomes the selected technical-access outcome with the identical cause.
+- Test that a translated technical failure which will not reach the HTTP exception handler still records the original cause at the translation boundary, for example through an ERROR log or an explicit diagnostic-logger contract.
 - Test that expected domain/application exceptions pass through and unrelated programming defects remain unwrapped.
 - Test polling, reconciliation, and recovery loops for their selected recovery semantics, including a framework-classified failure and an unrelated runtime failure.
 - Convert the inventory to an architecture test that prevents a parallel business-exception hierarchy and unapproved advice.

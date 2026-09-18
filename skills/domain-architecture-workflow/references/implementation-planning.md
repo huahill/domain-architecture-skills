@@ -64,7 +64,9 @@ package whose responsibilities have become mixed, the detailed plan must include
 naming decisions into architecture tests before implementation proceeds. When a task adds or changes
 expected failures, exception mapping, retry classification, or client-visible errors, the plan must also
 include the Exception And Problem Contract Preflight from the JFoundry guidance and convert its
-decisions into exception, ProblemMapper, and runtime-mapping tests before implementation proceeds.
+decisions into exception, ProblemMapper, runtime-mapping, and diagnostic-logging tests before
+implementation proceeds. The preflight must say whether each translated technical failure reaches
+the HTTP exception handler or must be logged at the outbound translation boundary.
 
 ## Planning-Ready Handoff
 
