@@ -77,6 +77,7 @@ The handoff preserves specialist results, decisions, constraints, open questions
 | Scoped strategic and tactical modeling: business capabilities, Subdomains, Bounded Contexts, Context Maps, current/target semantic conflicts, rules, lifecycle, and tactical patterns | `domain-modeling` |
 | Architecture decision or boundary review | `domain-architecture-guidance` |
 | Confirmed jfoundry implementation landing | `using-jfoundry` |
+| VAdmin administration adoption | `using-vadmin` |
 
 `domain-modeling` invokes strategic work only when the requested decision requires it, such as system decomposition, multi-team ownership, or cross-context semantic conflict. An established-context increment can remain tactical or return a lightweight `not-applicable` result. Strategic modeling describes the business problem space; it does not derive teams, modules, microservices, databases, deployment boundaries, or architecture styles.
 
@@ -123,6 +124,7 @@ skills/
   domain-modeling/
   domain-architecture-guidance/
   using-jfoundry/
+  using-vadmin/
 ```
 
 ## Updating

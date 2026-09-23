@@ -1,0 +1,9 @@
+interface:
+  display_name: Using VAdmin
+  short_description: VAdmin administration adoption guide for Java applications.
+  default_prompt: >
+    Use $using-vadmin to add or modify VAdmin administration capabilities.
+    Base package: PACKAGE_NAME
+    Runtime: Spring Boot, undecided
+    Identity: local IAM, OIDC, self-provided, or undecided
+    Visual language: vaadin, ant, or undecided

@@ -77,6 +77,7 @@ claude plugin install domain-architecture@huahill
 | 有范围的战略与战术建模：业务能力、子域、限界上下文、上下文映射、现状/目标语义冲突、业务规则、生命周期和战术模式 | `domain-modeling` |
 | 架构决策或边界评审 | `domain-architecture-guidance` |
 | 已确认的 jfoundry 实现落地 | `using-jfoundry` |
+| VAdmin 管理后台接入 | `using-vadmin` |
 
 `domain-modeling` 仅在待决策问题确实需要时启用战略建模，例如系统拆分、多团队责任归属或跨上下文语义冲突。已建立限界上下文内的增量可以只做战术建模，也可以返回轻量的 `not-applicable` 结果。战略建模描述业务问题空间，不会据此推导团队、模块、微服务、数据库、部署边界或架构风格。
 
@@ -123,6 +124,7 @@ skills/
   domain-modeling/
   domain-architecture-guidance/
   using-jfoundry/
+  using-vadmin/
 ```
 
 ## 更新

@@ -13,6 +13,7 @@ The plugin exposes these internal skills:
 - `domain-modeling`: framework-neutral domain modeling.
 - `domain-architecture-guidance`: source-aware architecture guidance.
 - `using-jfoundry`: jfoundry-specific application guidance.
+- `using-vadmin`: VAdmin administration adoption guidance.
 
 ## Scope
 
@@ -28,8 +29,9 @@ The plugin covers:
 - Architecture unit tests such as ArchUnit and ArchUnitNET.
 - jMolecules-style expression for Java/Kotlin.
 - jfoundry-specific business project guidance.
+- VAdmin administration adoption guidance.
 
-Do not collapse DDD, Layered, Onion, Hexagonal / Ports and Adapters, CQRS, Event Sourcing, jMolecules, or jfoundry into one canonical model. Attribute every recommendation to the right level: domain modeling, architecture style, implementation guidance, framework convention, or project-local decision.
+Do not collapse DDD, Layered, Onion, Hexagonal / Ports and Adapters, CQRS, Event Sourcing, jMolecules, jfoundry, or VAdmin into one canonical model. Attribute every recommendation to the right level: domain modeling, architecture style, implementation guidance, framework convention, or project-local decision.
 
 ## Skill Boundaries
 
@@ -51,6 +53,8 @@ Do not collapse DDD, Layered, Onion, Hexagonal / Ports and Adapters, CQRS, Event
 - Keep `using-jfoundry` jfoundry-specific. Do not move general DDD methodology into it.
 - Keep `using-jfoundry` a thin consumption contract for business projects. See **using-jfoundry Maintenance**.
 - Skip `using-jfoundry` for non-jfoundry projects and record why no framework landing applies in the composite handoff; do not invoke the specialist merely to produce a `not-applicable` result. When jfoundry use is undecided, do not invoke the specialist or block framework-neutral Domain Modeling and Architecture Guidance. Defer the choice until a framework-specific next activity materially requires it, and record the pending optional landing in the handoff.
+- Keep `using-vadmin` a thin consumption contract for downstream applications. See **using-vadmin Maintenance**.
+- Skip `using-vadmin` for non-VAdmin projects and record why no framework landing applies in the composite handoff. When VAdmin adoption is undecided, do not invoke the specialist or block framework-neutral Domain Modeling and Architecture Guidance.
 - Do not make this repository depend on Superpowers, OpenSpec, SpecKit, or any other external process framework. They may be described only as optional companions selected by the user or already active in the project.
 - Keep remote protocol translation in the business project's infrastructure adapter. Expected remote absence, conflict, and business rejection belong in the Port result; only known technical failures at an application-owned secondary Port are candidates for `ExternalAccessException` translation. Preserve the original cause, and log it at that translation boundary whenever the failure will not reach the runtime HTTP exception handler.
 
@@ -115,6 +119,34 @@ Before adding or tightening guidance after a project incident:
    consumption contract and the mechanics are routed upstream.
 6. After a jfoundry API or runtime change, update jfoundry first, then delete any copied fact from
    `using-jfoundry` rather than chasing the new signature there.
+
+## using-vadmin Maintenance
+
+`using-vadmin` is a consumption contract for downstream applications that adopt VAdmin.
+It is not a VAdmin manual, not a second architecture skill, and not a place to freeze one
+project's incident into a universal rule. Keep these instructions in this repository-root
+`AGENTS.md`; do not add a per-skill `AGENTS.md`.
+
+Keep in `using-vadmin`:
+
+- Whether a runtime adapter is selected, and where it lands in the application.
+- What the project must not reinvent: the shell, theme, system pages, route registration,
+  permission catalog, and composite translations.
+- Version-aware routing to the selected VAdmin release documentation.
+- Runtime branching: Spring Boot is the only supported runtime today; the skill structure
+  allows future `helidon-runtime.md` or `quarkus-runtime.md` references without restructuring.
+
+Do not keep in `using-vadmin`:
+
+- Maven coordinates, BOM versions, or starter lists.
+- Configuration property keys, default values, or auto-configuration class names.
+- Method signatures, API call sequences, or Vaadin component internals.
+- A project-local incident, investigation, or workaround, unless it has become a stable
+  downstream contract that every affected project must follow.
+
+Stable VAdmin type names may appear when they identify a landing or an anti-reinvention rule
+(`AdminModule`, `AdminPage`, `AdminHostLayout`). Route their exact semantics and
+version-specific mechanics to the selected release documentation.
 
 ## Source Policy
 
