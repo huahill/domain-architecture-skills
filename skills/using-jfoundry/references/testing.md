@@ -18,7 +18,7 @@ When aggregate persistence is selected, record a project-local aggregate invento
 - Non-aggregate application contracts for lookup, query, snapshot, event history, lease, or CAS responsibility must not use the Repository suffix.
 - A MyBatis-Plus adapter for a single-root aggregate must use `MybatisPlusAggregateRepository` or the release-documented equivalent. A composite root-plus-dependents adapter must preserve complete synchronization and runtime weaving. A direct implementation must be an explicit recorded exception, not an untracked shortcut.
 - Add a focused runtime test when adapter behavior depends on transaction boundaries, persistence observers, or domain-event context wiring.
-- Application and worker/boot composition classes that call `AggregateRepository.findById` or `findByIdForUpdate` must own a transaction boundary: inject jFoundry `TransactionRunner`, or use a `Transactional*` use-case decorator. Do not invent a project-local transaction port. Record a red architecture test that rejects an aggregate load without that boundary.
+- Application services that call `AggregateRepository.findById` or `findByIdForUpdate` must own a transaction boundary: inject jFoundry `TransactionRunner` and call `run` / `call` inside the service method. Do not create a `Transactional*` decorator for every use case; inline the transaction boundary in the service that owns the workflow. Do not invent a project-local transaction port. Record a red architecture test that rejects an aggregate load without that boundary.
 - Do not wrap outbound HTTP, SDK, or broker calls in the same transaction that loaded the aggregate. Load a snapshot or lookup result, then call the external system outside the transaction.
 
 ## Domain type semantics and naming rules
