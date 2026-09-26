@@ -30,6 +30,19 @@ IAM. No PostgreSQL database is required for VAdmin in this mode. The host must s
 the identity and authorization contract beans that VAdmin's framework-neutral core
 consumes.
 
+Those implementations are secondary adapters, not composition-root types and not
+business-aggregate persistence:
+
+- Place JDBC, client, or other technology implementations in the host's outbound adapter package.
+  In a Hexagonal host that already has a VAdmin adapter package,
+  reuse it; do not invent a bounded context for platform identity.
+- Keep configuration, conditions, and startup runners in the runtime assembly
+  package. The composition root may construct the adapters; it must not own SQL.
+- Do not fold VAdmin IAM tables into the host's aggregate repositories or force
+  them through aggregate persistence bases merely because the business model uses
+  those bases. A dedicated mapper or JDBC adapter is the usual shape for a small
+  host-owned identity schema.
+
 ## Permission Model
 
 Permission codes follow `domain:resource:action`. Roles are configurable sets of

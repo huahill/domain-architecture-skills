@@ -93,6 +93,16 @@ class JFoundryGuidanceTests(unittest.TestCase):
         text = (WORKFLOW / "references" / "implementation-planning.md").read_text(encoding="utf-8")
         self.assertIn("Exception And Problem Contract Preflight", text)
 
+
+    def test_jfoundry_architecture_keeps_persistence_out_of_runtime_assembly(self):
+        text = (USING_JFOUNDRY / "references" / "architecture.md").read_text(encoding="utf-8")
+        for required in (
+            "Keep JDBC, mappers, and other persistence implementations in outer adapters",
+            "runtime assembly package may construct those adapters",
+            "must not own the SQL",
+        ):
+            self.assertIn(required, text)
+
     def test_jfoundry_architecture_requires_domain_type_marker_preflight(self):
         text = (USING_JFOUNDRY / "references" / "architecture.md").read_text(encoding="utf-8")
         self.assertIn("Domain Type Marker Preflight", text)

@@ -22,6 +22,7 @@ In a selected Hexagonal analysis scope, express the application core, inbound co
 - Keep HTTP request/response DTOs in primary adapters and application command/result models at the application boundary.
 - Keep lookup facts for commands separate from caller-facing queries when their responsibility or result shape differs. Add projections only for event- or state-driven read-model materialization.
 - Keep global runtime configuration and selected starters in the runtime assembly module/package.
+- Keep JDBC, mappers, and other persistence implementations in outer adapters. The runtime assembly package may construct those adapters; it must not own the SQL.
 - Do not mix Hexagonal and Onion annotations in one ArchUnit analysis scope.
 - Do not introduce CQRS, ports, or separate Maven modules for symmetry.
 

@@ -19,7 +19,7 @@ The agent should:
 1. Confirm or infer the base package and Java version (25 required).
 2. Resolve the runtime. Spring Boot is currently the only supported runtime. For an undecided runtime, proceed with framework-neutral module declaration and record the pending adapter choice.
 3. Read `spring-boot-runtime.md` for the confirmed runtime, then add the starter dependency and configure Vaadin package discovery.
-4. Resolve the identity strategy. Local IAM needs PostgreSQL; self-provided identity can disable it. Read `identity.md`.
+4. Resolve the identity strategy. Local IAM needs PostgreSQL; self-provided identity can disable it. Read `identity.md`. When identity is self-provided, implement VAdmin identity contracts as outbound adapters and wire them from the composition root.
 5. Declare each business `AdminModule` bean. Read `module-declaration.md` for the required metadata.
 6. Add `@Uses` production anchors for each dynamic view. Read `production-anchor.md`.
 7. Run Maven verification.
