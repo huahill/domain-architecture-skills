@@ -65,6 +65,8 @@ The exact names are project decisions. Business meaning wins over suffix-first f
 | Enum | Closed state or classification | Native enum |
 | Exception | Named failure outcome | Exception type |
 
+A named exception records a business or use-case failure outcome. Rejecting a null or blank constructor argument is an ordinary programming precondition, not a domain or application exception type.
+
 A Java `record` is syntax, not a domain classification. A record can be an identifier, value object, event, application model, or adapter protocol model. Every domain type must have an explicit semantic in the inventory or a recorded exception.
 
 ## Naming Contract Matrix

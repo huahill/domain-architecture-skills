@@ -36,6 +36,7 @@ Transport parsing and bean validation belong to the primary adapter. Use the sel
 ## Boundary Rules
 
 - Every project exception in domain or application code must extend `DomainException` or `ApplicationException`, or be replaced by the applicable jFoundry type.
+- That rule covers named business and use-case failures. Do not replace a programmer or configuration precondition, such as a null or blank argument, with the invalid-input application exception. Leave that defect unexpected. Resolve the selected release's exception types and HTTP mapping from its documentation rather than from this skill.
 - Do not encode a whole workflow's failures in one generic context exception such as `OrderFlowException`; split outcomes by domain rule, state, invalid argument, absence, conflict, or external access.
 - Keep stable retryability in the contract that interprets it, such as a task-handler result or remote-outcome result. Do not make a generic exception the durable retry protocol when the selected framework or application port can express the decision.
 - Represent expected remote outcomes in outbound results when possible. Reserve `ExternalAccessException` for technical access or availability failures.
