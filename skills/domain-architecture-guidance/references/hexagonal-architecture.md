@@ -150,6 +150,16 @@ Do not treat every type named `UseCase` as the implementation. In this command-o
 `*UseCase` is the inbound contract and the `*CommandHandler` is its implementation. Other projects
 may use `*Service` implementations, but must document the meaning consistently.
 
+## Use-Case Cohesion
+
+One business command keeps one primary port and one application entry type. That entry sequences the use case. It does not accumulate every step as its own dependency.
+
+Split a step into a named collaborator in the same application capability when its recovery differs: it commits separately, retries independently, or compensates without rolling back the other steps. Different error codes inside one atomic transaction are not a separate step. Consecutive changes that share that transaction stay in one collaborator. Typical splits are claim versus execution versus settlement, idempotency reservation versus the business change, and loading a command versus recording its outcome. Each collaborator owns the ports it needs. The entry depends on those collaborators, not on the ports behind them, and the composition root wires the ports. The entry calls the collaborators in order and keeps the use-case contract.
+
+Do not create a primary or secondary port for each step. A collaborator is an application implementation detail, not a new inbound or outbound boundary. Do not move the sequence, transaction demarcation, or technical workflow into an aggregate or domain service. Domain types keep the decisions and state transitions; collaborators coordinate them.
+
+Dependency direction and architecture tests do not prove this cohesion. A service can depend only inward and still be a procedural script. Review the entry type when its constructor lists collaborators that belong to different steps.
+
 ## Secondary Port Ownership
 
 Place a secondary port by consumer ownership:

@@ -103,7 +103,7 @@ Dependencies point inward toward the domain model.
 Typical constraints:
 
 - Domain model is the center and should not depend on infrastructure.
-- Application services depend inward and coordinate use cases.
+- Application services depend inward and coordinate use cases. One command keeps one entry type; steps with separate transactions or separate recovery become named collaborators in that capability. Different error codes in one atomic transaction stay together. The entry depends on the collaborators, not on their ports. See Use-Case Cohesion.
 - Infrastructure depends on inner rings and implements outer concerns.
 - Persistence, web, messaging, serialization, and dependency injection details stay outside the domain model unless the project intentionally trades purity for framework integration.
 - Within each ring, organize non-trivial code by business capability before technical role when that improves cohesion. Shared application models remain owned by the application capability.
@@ -212,6 +212,11 @@ number of callers.
 - Put repeated use-case orchestration in the owning application's capability package, usually a
   `support` package when that grouping improves clarity. It may load aggregates, coordinate clock
   access, or apply application-level authorization, but must not take over domain behavior.
+- When one use-case entry coordinates steps that commit separately or recover differently, give each
+  step a named collaborator in that capability. Keep consecutive changes that share one atomic
+  transaction in the same collaborator. The entry depends on the collaborators and sequences them;
+  do not also keep their ports. Do not add a port per step, and do not move that sequence into the
+  domain model.
 - Keep HTTP, broker, persistence, serialization, remote-protocol, and client-SDK helpers in the
   adapter or infrastructure package that owns that technology boundary. Application and domain code
   must not depend on those helpers.

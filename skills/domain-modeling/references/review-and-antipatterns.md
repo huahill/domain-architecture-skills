@@ -20,6 +20,9 @@ Use this to review a proposed model or to check work before implementation.
 - Are value objects carrying validation and meaning, not just wrapping primitives mechanically?
 - Are domain services reserved for domain decisions that do not belong to one aggregate?
 - Are application services coordinating use cases instead of owning core business rules?
+- Does one use-case entry only sequence steps whose recovery differs, leaving those steps to named
+  collaborators instead of collecting their ports? Do consecutive changes in one atomic transaction
+  stay in one collaborator?
 - Are repositories focused on aggregate lifecycle and command-side loading?
 - Are read models separate from write aggregates when their shape differs?
 - Are open questions visible before code hardens the model?
@@ -49,6 +52,18 @@ without a decision scope, rationale, evidence state, or source.
 
 Fix: classify only when it informs the requested decision. Record scope, rationale,
 `confirmed | inferred | proposed` status, and evidence for every material strategic item.
+
+### Procedural Use-Case Entry
+
+Symptom: one application service implements one command, but its constructor collects the ports of
+unrelated steps. The type is short or has one public method, yet it claims, executes, settles,
+reserves idempotency, and records outcomes itself. Architecture tests still pass because every
+dependency points inward.
+
+Fix: keep one primary port and one entry type. Move each step with its own transaction or its own
+recovery to a named collaborator in the same capability. Leave consecutive changes that share one
+atomic transaction in that collaborator. The entry depends on the collaborators, not on their ports.
+Do not add a port for each step and do not push the workflow into an aggregate or domain service.
 
 ### Anemic Domain Model
 
