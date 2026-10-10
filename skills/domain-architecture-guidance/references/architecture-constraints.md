@@ -189,6 +189,16 @@ responsibility categories, not mandatory package roots.
 
 Do not introduce CQRS for symmetry alone. If the project has chosen CQRS, keep command and query responsibilities separated.
 
+## Transaction Boundaries
+
+An application service owns the transaction boundary of the use case it coordinates. The transaction covers local state that must commit or roll back together: loading the aggregates, invoking domain behavior, and saving the result.
+
+Do not keep that transaction open across an outbound HTTP, client-SDK, or broker call. Those calls are slow, fail independently of the local commit, and cannot be rolled back with it. Read the facts needed for the call through a snapshot or lookup, or use data the use case already decided, then make the call outside the transaction. When the call returns, open a short transaction, reload the affected aggregates, recheck the version or invariant, and save.
+
+A pessimistic row lock and an optimistic version check are both persistence mechanisms for that short local transaction. Neither one makes it acceptable to hold a database transaction across the remote call. Prefer an optimistic version check when the aggregate already has a version and the use case can retry a conflict. Use a pessimistic lock only when the critical section is itself a short database decision that cannot be expressed as a conditional update.
+
+This is an architecture rule for any persistence technology. A framework skill only maps it onto that framework's transaction API. It does not become optional in a project that does not use the framework.
+
 ## Application Support Naming
 
 An application-layer helper shared by several command handlers may centralize repeated aggregate

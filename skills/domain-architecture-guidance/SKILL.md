@@ -40,6 +40,7 @@ DDD is a domain modeling methodology and language for business concepts, boundar
 - For C#/.NET, Go, and Python, translate concepts into idiomatic modules, packages, namespaces, protocols/interfaces, tests, and dependency rules.
 - Apply this skill to client applications only when they own substantial business behavior, offline workflows, synchronization conflicts, or local persistence boundaries. Do not imply platform-specific mobile or frontend implementation guidance.
 - Keep the domain model free of framework persistence concerns when the domain is behavior-rich; allow simpler transaction script or CRUD designs for low-complexity areas.
+- Keep a use-case transaction around local aggregate load, domain behavior, and save only. Do not leave it open across outbound HTTP, client-SDK, or broker calls; reload and recheck in a later short transaction. See Transaction Boundaries in `references/architecture-constraints.md`.
 - Treat CQRS as a targeted pattern for asymmetric read/write needs, complex queries, scalability differences, or task-based write models. Do not make every use case CQRS by default.
 - Treat Event Sourcing as separate from CQRS. Do not introduce it unless auditability, temporal reconstruction, or event replay is a real requirement.
 - Avoid saying "must" unless the rule follows from the chosen architecture and project context. Prefer "usually", "in this architecture", or "for this bounded context".
