@@ -30,6 +30,8 @@ Use a named pattern only when its semantics fit. Record observed current and des
 with separate item-level evidence and `confirmed | inferred | proposed` status when both are
 material. Current-state evidence does not confirm a target proposal. Do not preselect APIs,
 events, messaging, schemas, ports, adapters, reliability mechanisms, or topology.
+Persistent-state ownership is not decided in this modeling step. After persistence is selected,
+architecture guidance still forbids one context from mapping stored state owned by another.
 
 ## Checks
 

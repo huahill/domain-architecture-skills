@@ -11,7 +11,7 @@ Before writing or changing an aggregate adapter, complete this project-local pre
 3. Confirm the contract follows the selected jfoundry lifecycle abstraction and that application orchestration calls `add / modify / remove` rather than a generic `save`.
 4. Name every non-aggregate read, store, CAS, lease, or history contract separately, with its consumer and result shape; do not give it the Repository suffix.
 5. Select an adapter shape below for each aggregate, including any direct implementation exception and the reason runtime weaving or child synchronization makes it necessary.
-6. Record existing tables, root-version policy, and database-specific statements, then turn the naming and adapter decisions into architecture tests before implementation proceeds.
+6. Record the existing tables, which context owns each one, the root-version policy, and database-specific statements. A mapping or statement in this adapter must name only stored state owned by this context. Read another context's stored state through that context's application contract. For the selected technology, compare JPA `@Table`, MyBatis-Plus `@TableName`, or table identifiers in JDBC or XML statements with that ownership record. A package-dependency test does not see this. Turn the naming and adapter decisions into architecture tests before implementation proceeds.
 
 If aggregate ownership or lifecycle is unclear, return to domain modeling rather than converting a DAO into a repository.
 

@@ -103,6 +103,8 @@ Convert the inventory into narrow project-local rules, typically:
 - application primary-port roots contain only `*UseCase` interfaces when the project selected the strict contract layout;
 - `Repository`, `Store`, `QueryPort`, `Gateway`, `Port`, `Adapter`, and `Client` keep their selected meanings;
 - classes in a capability depend only on the models and ports owned by that capability;
-- bounded contexts cross only through their selected application contracts.
+- bounded contexts cross only through their selected application contracts, including when the crossing is stored state rather than a Java type;
+- secondary adapters outside persistence translation do not depend on aggregate types or aggregate repositories, and do not invoke state-changing domain behavior;
+- a context's storage model names only stored state owned by that context.
 
 Add a marker-coverage guard when using marker-based framework rules. An empty matched set can otherwise create a vacuous pass. Keep explicit migration exceptions in the project test with a reason and remove them after cleanup.

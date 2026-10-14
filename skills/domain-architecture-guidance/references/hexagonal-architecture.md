@@ -35,7 +35,7 @@ locatable, not a structure mandated by Cockburn.
 - Primary Port: inbound contract exposed by the application core to primary adapters.
 - Application Service: use-case implementation and orchestration boundary; loads aggregates, invokes domain behavior, coordinates transactions, and calls secondary ports.
 - Secondary Port: outbound need expressed by application or domain core.
-- Secondary Adapter: implementation of a secondary port, such as persistence, external API client, broker sender, cache, file storage, or SDK adapter.
+- Secondary Adapter: implementation of a secondary port, such as persistence, external API client, broker sender, cache, file storage, or SDK adapter. It translates that contract. Implementing the port does not let it load aggregates and invoke state-changing domain behavior.
 
 ## Adapter Package Direction
 
@@ -156,7 +156,7 @@ One business command keeps one primary port and one application entry type. That
 
 Split a step into a named collaborator in the same application capability when its recovery differs: it commits separately, retries independently, or compensates without rolling back the other steps. Different error codes inside one atomic transaction are not a separate step. Consecutive changes that share that transaction stay in one collaborator. Typical splits are claim versus execution versus settlement, idempotency reservation versus the business change, and loading a command versus recording its outcome. Each collaborator owns the ports it needs. The entry depends on those collaborators, not on the ports behind them, and the composition root wires the ports. The entry calls the collaborators in order and keeps the use-case contract.
 
-Do not create a primary or secondary port for each step. A collaborator is an application implementation detail, not a new inbound or outbound boundary. Do not move the sequence, transaction demarcation, or technical workflow into an aggregate or domain service. Domain types keep the decisions and state transitions; collaborators coordinate them.
+Do not create a primary or secondary port for each step. A collaborator is an application implementation detail, not a new inbound or outbound boundary. Do not move the sequence, transaction demarcation, or technical workflow into an aggregate, a domain service, or a secondary adapter. Domain types keep the decisions and state transitions; application collaborators coordinate them.
 
 Dependency direction and architecture tests do not prove this cohesion. A service can depend only inward and still be a procedural script. Review the entry type when its constructor lists collaborators that belong to different steps.
 
@@ -188,5 +188,7 @@ views into the domain merely to make them reusable.
 - Primary adapters should not call secondary adapters or repositories directly.
 - Application services should not depend on concrete persistence, HTTP, broker, cache, SDK, or framework adapter types.
 - Secondary adapters should translate external DTOs, status codes, and persistence models before returning to core code.
+- Implementing a secondary port is not use-case orchestration. The adapter translates the outbound contract into technology, or into another context's application contract. Loading an aggregate and invoking state-changing domain behavior stays in an application service of the owning context.
+- A persistence adapter may depend on an aggregate only to translate between its state and stored state. Other secondary adapters must not depend on aggregate types or aggregate repositories. Do not encode business operation names in this rule.
 - Ports should represent meaningful variability, external dependency, test boundary, or model protection. Avoid one-interface-per-class abstractions.
 - Primary and Secondary Ports should depend on application- or domain-owned models, not on models owned by the opposite port direction.

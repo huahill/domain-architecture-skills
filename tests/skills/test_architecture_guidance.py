@@ -15,6 +15,9 @@ class ArchitectureGuidanceTests(unittest.TestCase):
             "any persistence technology",
             "optimistic version check",
             "pessimistic lock",
+            "## Bounded Context Crossings",
+            "stored state",
+            "Package-dependency tests do not see",
         ):
             self.assertIn(required, text)
 
@@ -22,6 +25,8 @@ class ArchitectureGuidanceTests(unittest.TestCase):
         text = SKILL.read_text(encoding="utf-8")
         self.assertIn("Transaction Boundaries", text)
         self.assertIn("outbound HTTP, client-SDK, or broker calls", text)
+        self.assertIn("state-changing domain behavior", text)
+        self.assertIn("Bounded Context Crossings", text)
 
 
 if __name__ == "__main__":

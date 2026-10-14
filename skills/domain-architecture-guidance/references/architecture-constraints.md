@@ -75,7 +75,7 @@ Typical constraints:
 - Controllers should not contain business workflow logic.
 - Domain code should not depend on interface/API code.
 - Application code should not depend on concrete infrastructure adapters unless the project intentionally uses a relaxed layered style.
-- Infrastructure implements persistence, messaging, and external integration details.
+- Infrastructure implements persistence, messaging, and external integration details. It does not load an aggregate and choose a state transition.
 
 Controller-to-repository can be acceptable in a simple CRUD style, but in a project that explicitly enforces layered boundaries it is usually a violation.
 
@@ -105,6 +105,7 @@ Typical constraints:
 - Domain model is the center and should not depend on infrastructure.
 - Application services depend inward and coordinate use cases. One command keeps one entry type; steps with separate transactions or separate recovery become named collaborators in that capability. Different error codes in one atomic transaction stay together. The entry depends on the collaborators, not on their ports. See Use-Case Cohesion.
 - Infrastructure depends on inner rings and implements outer concerns.
+- Infrastructure may translate aggregate state to storage. It must not load an aggregate and choose a state transition; that coordination stays in an application service.
 - Persistence, web, messaging, serialization, and dependency injection details stay outside the domain model unless the project intentionally trades purity for framework integration.
 - Within each ring, organize non-trivial code by business capability before technical role when that improves cohesion. Shared application models remain owned by the application capability.
 
@@ -138,6 +139,7 @@ Typical constraints:
 - Primary adapters should not call secondary adapters or repositories directly when that bypasses application rules.
 - Application or domain core code should express outbound needs through secondary ports owned near the consumer.
 - Secondary adapters implement ports for databases, message brokers, external APIs, file systems, email, and other outside technologies.
+- Implementing a secondary port does not move orchestration into the adapter. The adapter translates. Loading an aggregate and invoking state-changing domain behavior stays in an application service. A persistence adapter may depend on the aggregate only to translate its state; other secondary adapters must not depend on aggregate types or aggregate repositories.
 - Inside/core code should not depend on adapter implementations.
 - In non-trivial applications, organizing by business capability before port direction usually keeps use cases and their models cohesive. This is an implementation recommendation, not a package structure mandated by Hexagonal Architecture.
 - When direction packages are used, a primary port should not depend on models owned by `port.out`, and a secondary port should not depend on models owned by `port.in`. Put shared application models in a neutral capability package.
@@ -258,6 +260,15 @@ The two types may share business meaning while serving different ownership and e
 
 This is an integration-boundary decision, not a requirement that every domain event be published. It also does not make CQRS or Event Sourcing mandatory.
 
+## Bounded Context Crossings
+
+When a project keeps more than one bounded context, a crossing is any use of another context's model, contract, or stored state. A Java type or package dependency is one visible kind of crossing. It is not the whole boundary.
+
+- Cross through the owning context's selected application contract.
+- Do not map another context's stored state into a local persistence model, even when the local type imports nothing from that context. Package-dependency tests do not see a storage name.
+- Record which context owns each stored state when persistence is selected. Domain modeling does not preselect schemas, tables, or a persistence technology.
+- State this rule in terms of ownership and translation. Do not name business operations or persistence annotations here. The selected framework skill maps stored-state ownership onto the persistence technology in use.
+
 ## Review Language
 
 Use precise wording:
@@ -268,3 +279,5 @@ Use precise wording:
 - "This abstraction is optional because no architecture in this project requires a port at this boundary."
 - "This is a DDD modeling problem because the aggregate no longer protects the invariant it owns."
 - "This is a project policy, not an industry-wide DDD rule; enforce it here but label it correctly."
+- "This secondary adapter violates the application boundary because it loads an aggregate and chooses a state transition instead of translating an outbound contract."
+- "This crosses a bounded context because the local storage model names state owned by the other context, even though no Java type crosses the package boundary."

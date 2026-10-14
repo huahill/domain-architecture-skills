@@ -20,7 +20,7 @@ Use this skill for downstream business projects, not for changing jfoundry itsel
 ## Non-Negotiable Boundaries
 
 - Keep domain code free of runtime, ORM, mapper, broker, HTTP, and client-SDK types.
-- Keep business orchestration in application code; primary adapters enter through an application boundary rather than calling persistence or clients directly.
+- Keep business orchestration in application code; primary adapters enter through an application boundary rather than calling persistence or clients directly. A secondary adapter that implements an outbound port still must not load an aggregate and choose its state transition.
 - Keep technology-specific persistence and messaging in outer adapters or infrastructure.
 - Do not select Hexagonal, Onion, CQRS, Spring Boot, Outbox, Inbox, locks, or a persistence provider merely because an implementation is available.
 - Keep aggregate repositories for aggregate lifecycle. Add read contracts or ports only when a read responsibility needs one.

@@ -8,7 +8,11 @@ Use tests for boundaries that matter and are likely to erode:
 - application should not depend on concrete infrastructure adapters
 - adapters should depend on ports/application contracts
 - bounded contexts or modules should not form cycles
+- outbound adapters outside persistence translation should not depend on aggregate types or aggregate repositories
+- a context's storage model should name only stored state that context owns
 - jMolecules annotations should align with package or project structure
+
+Import-graph and package-dependency tests cannot see stored-state ownership. Keep a project-local inventory of which context owns each stored state, and fail when a persistence mapping or statement names state owned by another context. Compare storage identifiers. Do not encode business operation names, and do not make one persistence annotation the architecture rule.
 
 ## Java / Kotlin with ArchUnit
 

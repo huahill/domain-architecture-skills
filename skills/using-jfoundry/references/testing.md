@@ -21,6 +21,13 @@ When aggregate persistence is selected, record a project-local aggregate invento
 - Application services that call `AggregateRepository.findById` or `findByIdForUpdate` must own a transaction boundary: inject jFoundry `TransactionRunner` and call `run` / `call` inside the service method. Do not create a `Transactional*` decorator for every use case; inline the transaction boundary in the service that owns the workflow. Do not invent a project-local transaction port. Record a red architecture test that rejects an aggregate load without that boundary.
 - Do not wrap outbound HTTP, SDK, or broker calls in the same transaction that loaded the aggregate. This restates the Architecture Guidance transaction-boundary rule. Load a snapshot or lookup result, then call the external system outside the transaction.
 
+## Outbound adapter and stored-state rules
+
+These rules restate Architecture Guidance. They do not name business operations.
+
+- Implementing a secondary port is not enough. Outbound adapters outside aggregate persistence translation must not depend on aggregate types or aggregate repositories, and must not invoke state-changing domain behavior. A persistence adapter may depend on the aggregate only to translate its state to stored state. Record a project-local architecture test for the dependency ban.
+- When contexts share a database, compare each persistence mapping or statement with the stored-state ownership record from the Aggregate Persistence Preflight. Reject a mapping that names another context's stored state even when the Java type does not depend on that context. Check JPA `@Table`, MyBatis-Plus `@TableName`, or table identifiers in JDBC or XML statements. Do not treat a package-dependency test as this check.
+
 ## Domain type semantics and naming rules
 
 Record a project-local semantic inventory before writing marker or naming rules. At minimum, guard the selected meaning of `Identifier`, `ValueObject`, `BaseAggregateRoot`, `BaseEntity`, `DomainEvent`, `Request`, `Response`, `Repository`, `Store`, `QueryPort`, `Gateway`, `Port`, `Adapter`, and `Client` for the packages being changed.

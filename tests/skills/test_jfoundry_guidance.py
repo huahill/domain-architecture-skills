@@ -21,6 +21,9 @@ class JFoundryGuidanceTests(unittest.TestCase):
             "add / modify / remove",
             "non-aggregate read, store, CAS, lease, or history contract",
             "Repository suffix",
+            "which context owns each one",
+            "MyBatis-Plus `@TableName`",
+            "JPA `@Table`",
         ):
             self.assertIn(required, text)
 
@@ -151,6 +154,9 @@ class JFoundryGuidanceTests(unittest.TestCase):
             "Transactional*",
             "TransactionRunner",
             "project-local transaction port",
+            "must not depend on aggregate types or aggregate repositories",
+            "stored-state ownership record",
+            "MyBatis-Plus `@TableName`",
         ):
             self.assertIn(required, text)
 
