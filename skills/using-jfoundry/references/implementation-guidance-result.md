@@ -43,6 +43,8 @@ JFoundry Landing:
 
 The specialist owns the `JFoundry Landing` payload. Select its fields from the confirmed domain and architecture results, project evidence, and the relevant jfoundry references. Omit fields that do not apply rather than filling them speculatively. `Persistence mappers / data mapping` must name the chosen adapter shape for each aggregate being landed: `MybatisPlusAggregateRepository` with one `AggregateData`/`DataMapper`/`BaseMapper`, a business persistence adapter that keeps root-plus-dependent synchronization complete, `JpaAggregateRepository`, or a direct repository implementation. Do not write "mapper and data object in adapter.out.persistence" as a substitute for that shape. This result guides the next implementation activity; it does not claim that production code was written or verified, and it must not copy persistence or runtime tutorials into the business project handoff.
 
+`Java version` is the language baseline for every later Java change in the project. Maven, persistence, messaging, and runtime assembly do not limit where it applies. Read `references/java-baseline.md` before writing or changing Java. Do not add another baseline field.
+
 It is an input to detailed planning, not the detailed plan itself. When a process companion is selected,
 that companion owns its specification, plan, tasks, files, and execution state. Otherwise, detailed plans
 belong under the workflow's default `docs/domain-architecture/plans/` directory. Do not duplicate a

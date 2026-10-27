@@ -8,6 +8,8 @@ Preserve the version the project already selects. Inspect the relevant `pom.xml`
 
 Preserve existing Java and runtime baselines unless the user asks to change them. Check that they remain compatible with the selected jfoundry release.
 
+The preserved Java baseline binds every later Java change, including domain and application code. Read `references/java-baseline.md`. Do not treat compiler files, persistence adapters, messaging, or runtime assembly as the only places it applies.
+
 Resolve the selected JFoundry line's compatibility documentation to determine its Java compile and
 runtime baseline. When the user requests a baseline migration, update compiler configuration, CI, and
 user-facing prerequisites together, then verify the complete consumer build on the selected baseline.

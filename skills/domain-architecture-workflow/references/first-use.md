@@ -123,9 +123,9 @@ do not repeat completed decision phases merely to adopt the companion. Give it t
 results and handoff, including confirmed decisions, constraints, and open questions. It creates
 its own specification and plan artifacts from that input. Do not repeat a completed decision phase
 unless current requirements contradict the existing evidence or the planned increment changes
-business meaning or architecture boundaries. When a later task implements a specialist concern such
-as persistence, messaging, or runtime assembly, execute that specialist against the persisted
-decisions; do not treat the handoff documents as the skill.
+business meaning or architecture boundaries. When a later task changes any Java in a confirmed jfoundry project, execute `using-jfoundry` against the persisted
+decisions; do not treat the handoff documents as the skill. Persistence, messaging, and runtime
+assembly are examples of that work, not a closed list.
 
 ## Consuming And Revisiting The Handoff
 
@@ -134,8 +134,8 @@ decisions; do not treat the handoff documents as the skill.
 - When no companion is selected, plugin-managed detailed planning is the next activity under
   `docs/domain-architecture/plans/`.
 - Persisted `docs/domain-architecture/` artifacts record this project's choices. They are not a second copy of specialist skills and must not be expanded into tutorials.
-- When implementing a selected capability, re-invoke the specialist that owns that capability even if its phase is `completed`. Example: before writing MyBatis-Plus aggregate adapters, run `using-jfoundry` and read its persistence and repository references plus the selected jfoundry release.
-- Do not wait for architecture drift before re-entering `using-jfoundry`. Drift returns to Architecture Guidance; ordinary framework-shaped implementation still uses the landing skill.
+- When implementing any Java change in a confirmed jfoundry project, re-invoke `using-jfoundry` and read its Java baseline even if its phase is `completed`. Also read the specialized references for the concern being implemented. Example: before writing MyBatis-Plus aggregate adapters, also read the persistence and repository references plus the selected jfoundry release.
+- Do not wait for architecture drift before re-entering `using-jfoundry`. Drift returns to Architecture Guidance; ordinary Java edits still use the landing skill. Maven, persistence, messaging, and runtime assembly do not define the whole trigger.
 - When implementation exposes architecture drift, return to `domain-architecture-guidance` and revise affected downstream guidance.
 - When implementation changes Subdomain scope, Bounded Context meaning, team or rule ownership,
   a context relationship, current/target intent, or other business meaning, return to

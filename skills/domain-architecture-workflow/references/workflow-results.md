@@ -65,7 +65,7 @@ changed, and which downstream results need revision.
 
 Classify jfoundry applicability without making it a prerequisite for framework-neutral work:
 
-- When the project uses jfoundry or the user explicitly requests jfoundry-specific landing, invoke `using-jfoundry` after the required domain and architecture assumptions are clear.
+- When the project uses jfoundry or the user explicitly requests jfoundry-specific landing, invoke `using-jfoundry` after the required domain and architecture assumptions are clear. Once jfoundry is confirmed, invoke it for every Java change in that project, including domain and application code. Do not wait for a Maven, persistence, messaging, or runtime concern.
 - When the project does not use jfoundry, skip `using-jfoundry` and record why no framework landing applies. Do not invoke the specialist merely to return `not-applicable`.
 - When jfoundry use is undecided, continue Domain Modeling and Architecture Guidance without invoking `using-jfoundry`. Record the pending optional landing in the handoff. Ask the smallest blocking question only when the recommended next activity is framework-specific and the unresolved choice materially changes that activity.
 

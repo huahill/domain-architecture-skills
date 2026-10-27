@@ -133,8 +133,9 @@ Implementation discoveries that alter Subdomain scope, Bounded Context meaning, 
 ownership, a context relationship, current/target intent, or other business meaning return to
 Domain Modeling. Discoveries that alter architecture boundaries or dependency direction without
 changing those domain decisions return to Architecture Guidance. Framework conflicts return to
-JFoundry Implementation Guidance when applicable. Coding a previously decided persistence,
-messaging, or runtime adapter is not by itself a return-path event: execute the relevant specialist
+JFoundry Implementation Guidance when applicable. Coding Java in a confirmed jfoundry project is not
+by itself a return-path event, whether the change is domain or application code or a previously
+decided persistence, messaging, or runtime adapter: execute `using-jfoundry`
 against the existing decisions, and write back only newly confirmed project-specific choices.
 Preserve unaffected completed results. The planning owner updates its own artifacts after the
 revised handoff is available.

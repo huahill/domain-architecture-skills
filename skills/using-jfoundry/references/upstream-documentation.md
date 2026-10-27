@@ -11,6 +11,7 @@ Read `references/version-selection.md`. For an existing project, inspect its eff
 | Project concern | Upstream documentation to consult |
 |---|---|
 | Maven BOM and artifacts | Release dependency-management POMs and the matching runtime assembly guide |
+| Application Java language baseline | Selected release compatibility documentation |
 | Aggregate repository contract and persistence boundary | Aggregate-persistence and selected persistence implementation guides |
 | Reliable publication and consumption | Reliable-messaging guide and selected store/transport implementation guide |
 | Spring, Quarkus, or Helidon assembly | Matching runtime implementation and configuration guide |
