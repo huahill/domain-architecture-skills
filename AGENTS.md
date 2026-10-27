@@ -170,6 +170,8 @@ Do not treat Clean Architecture as a wholly new, standalone architecture. Use it
 
 - Keep each skill's `SKILL.md` concise. Put detailed guidance in that skill's `references/`.
 - Keep references one level below the skill directory and link them directly from `SKILL.md`.
+- Keep workflow routing scenarios in `tests/fixtures/workflow-scenarios.md`. They are maintainer
+  checks, not a consumer reference. Do not link them from a skill.
 - Keep examples short and labeled as sketches. They should demonstrate translation choices, not prescribe a universal project template.
 - Keep plugin maintenance instructions in this repository-root `AGENTS.md`. Do not add per-skill `AGENTS.md` files.
 - Preserve the distinction between foundational sources, implementation guidance, opinionated synthesis, and framework conventions.
@@ -241,6 +243,7 @@ Before publishing, check:
 - All release-version fields agree, excluding the Codex `+codex.<cachebuster>` suffix.
 - Every `skills/*/SKILL.md` has valid YAML frontmatter with `name` and `description`.
 - `domain-architecture-workflow` does not hard-depend on superpowers or any other external workflow skill.
+- `tests/fixtures/workflow-scenarios.md` is not linked from `skills/domain-architecture-workflow/SKILL.md`.
 - `domain-modeling` contains modeling workflow and output protocol guidance without framework assumptions.
 - `domain-architecture-guidance/references/source-policy.md` explains source hierarchy and cautions around Explicit Architecture and Clean Architecture.
 - `domain-architecture-guidance/references/architecture-constraints.md` separates DDD modeling concepts from Layered, Onion, Hexagonal / Ports and Adapters, and CQRS structural rules.

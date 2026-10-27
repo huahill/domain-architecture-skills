@@ -9,14 +9,16 @@ Use this skill for downstream business projects, not for changing jfoundry itsel
 
 ## Decision Flow
 
-1. Read `references/implementation-guidance-result.md` for setup, modification, or framework-landing work. If a persisted landing already exists, consume it as project decisions and still complete this flow for the concern being implemented. Do not implement from `docs/domain-architecture/04-jfoundry-implementation-guidance.md` alone.
-2. Before writing or changing any Java, read `references/java-baseline.md`. This includes domain, application, adapter, and test code. Maven, persistence, messaging, and runtime assembly are examples of specialized concerns; they do not define when the baseline applies. A persisted landing does not exempt the edit.
+1. Before writing or changing any Java, read `references/java-baseline.md`. This includes domain, application, adapter, and test code. Maven, persistence, messaging, and runtime assembly are examples of specialized concerns; they do not define when the baseline applies. A persisted landing does not exempt the edit. If a persisted landing already exists, consume it as the project decisions. Do not implement from `docs/domain-architecture/04-jfoundry-implementation-guidance.md` alone.
+2. Read one specialized reference for the concern being changed. Do not read the other references in the routing table, and do not read the skill directory recursively.
+   - Adding a dependency: `references/dependencies.md`, then the selected release's documentation, BOM, or source POM. Also read `references/version-selection.md` when the version itself is unresolved.
+   - Landing packages or annotations after Hexagonal or Onion has already been selected: `references/architecture.md`. Consume the confirmed Application Runtime Integration Policy from domain-architecture guidance; JFoundry templates do not replace project package ownership decisions.
+   - Aggregate persistence: both `references/persistence-data-mappers.md` and `references/repository-and-read-contracts.md`, and complete the Aggregate Persistence Preflight before writing adapters. This is the concern that has two references.
+   - One runtime, reliable messaging, locks, exceptions, or tests: the one matching row in the routing table.
+   - Exact framework APIs, properties, auto-configuration, or implementation algorithms: `references/upstream-documentation.md` as well as that one concern reference.
 3. Preserve the project's selected jfoundry version, runtime, architecture style, and conventions. Ask only when an unknown choice changes a required dependency, package role, or test.
-4. Read `references/dependencies.md`, then resolve the selected version's release documentation, BOM, or source POM before adding any dependency.
-5. Read `references/architecture.md` for JFoundry's package and annotation landing after Hexagonal or Onion has already been selected. Consume the confirmed Application Runtime Integration Policy from domain-architecture guidance; JFoundry templates do not replace project package ownership decisions.
-6. Read a specialized reference only when its concern applies: persistence, repository/read contracts, Spring, Quarkus, or Helidon runtime, reliable messaging, locks, exceptions, or tests. Specialized references do not replace the Java baseline. Aggregate persistence work must read `references/persistence-data-mappers.md` and `references/repository-and-read-contracts.md`, and complete the Aggregate Persistence Preflight, before writing adapters.
-7. Read `references/upstream-documentation.md` before using exact framework APIs, properties, auto-configuration behavior, or implementation-specific algorithms.
-8. Run the narrowest relevant Maven verification and return the JFoundry Implementation Guidance Result.
+4. When the task must return the JFoundry Implementation Guidance Result, read `references/implementation-guidance-result.md`. A Java edit that follows an existing landing does not read it only to restate that landing.
+5. Run the narrowest relevant Maven verification and return the result when one is required.
 
 ## Non-Negotiable Boundaries
 

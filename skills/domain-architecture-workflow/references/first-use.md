@@ -134,7 +134,7 @@ assembly are examples of that work, not a closed list.
 - When no companion is selected, plugin-managed detailed planning is the next activity under
   `docs/domain-architecture/plans/`.
 - Persisted `docs/domain-architecture/` artifacts record this project's choices. They are not a second copy of specialist skills and must not be expanded into tutorials.
-- When implementing any Java change in a confirmed jfoundry project, re-invoke `using-jfoundry` and read its Java baseline even if its phase is `completed`. Also read the specialized references for the concern being implemented. Example: before writing MyBatis-Plus aggregate adapters, also read the persistence and repository references plus the selected jfoundry release.
+- When implementing any Java change in a confirmed jfoundry project, re-invoke `using-jfoundry` and read its Java baseline even if its phase is `completed`. Also read the one specialized reference for the concern being implemented. Aggregate persistence also reads its repository reference. Example: before writing MyBatis-Plus aggregate adapters, read the persistence and repository references plus the selected jfoundry release, not the other jfoundry references.
 - Do not wait for architecture drift before re-entering `using-jfoundry`. Drift returns to Architecture Guidance; ordinary Java edits still use the landing skill. Maven, persistence, messaging, and runtime assembly do not define the whole trigger.
 - When implementation exposes architecture drift, return to `domain-architecture-guidance` and revise affected downstream guidance.
 - When implementation changes Subdomain scope, Bounded Context meaning, team or rule ownership,

@@ -21,12 +21,9 @@ DDD is a domain modeling methodology and language for business concepts, boundar
 4. For a review, verify whether the implementation protects those domain decisions. For a design task, do not invent or rewrite a Subdomain, Bounded Context, invariant, lifecycle, Aggregate, or Domain Event without domain evidence; return business-meaning or ownership questions to Domain Modeling.
 5. Identify the chosen architecture, if any: Layered, Onion, Hexagonal / Ports and Adapters, CQRS, mixed, or none. If one is chosen, apply its structural constraints before suggesting simplification.
 6. Select the architecture complexity justified by the requested decision. Add CQRS, strict ports/adapters, integration mechanisms, or other structural ceremony only when the consumed domain needs and project constraints require them; do not infer those choices from domain model complexity alone.
-7. Apply source hierarchy from `references/source-policy.md` before citing or enforcing a rule.
-8. Apply architecture constraints from `references/architecture-constraints.md` before changing boundaries or dependency direction.
-9. Apply backend implementation guidance from `references/backend-guidance.md` when changing code or recommending structure.
-10. Complete the Package And Type Semantics Preflight from `references/package-and-type-semantics.md` before changing package ownership or adding domain/application/adapter types in a non-trivial increment.
-11. State uncertainty explicitly when a rule is context-dependent.
-12. For architecture decisions, reviews, and boundary-affecting implementation recommendations, produce an `Architecture Guidance Result` from `references/architecture-result.md` with consumed domain decisions, traceable architecture consequences, rule sources, constraints, evidence, open questions, and readiness for the recommended next step. Simple conceptual explanations and documentation answers may remain concise unless the user asks for a structured result.
+7. Read each reference whose row in Reference Routing matches this task. Skip every row that does not match. Do not read the skill directory recursively.
+8. State uncertainty explicitly when a rule is context-dependent.
+9. For architecture decisions, reviews, and boundary-affecting implementation recommendations, produce an `Architecture Guidance Result` from `references/architecture-result.md` with consumed domain decisions, traceable architecture consequences, rule sources, constraints, evidence, open questions, and readiness for the recommended next step. Simple conceptual explanations and documentation answers may remain concise unless the user asks for a structured result.
 
 ## Core Rules
 
@@ -49,20 +46,18 @@ DDD is a domain modeling methodology and language for business concepts, boundar
 
 ## Reference Routing
 
-Read only the references required by the task.
+Read each row that matches the current task. Skip every row that does not match. Do not read the skill directory recursively.
 
-- For an architecture decision, review, or boundary-affecting recommendation, read
-  `references/architecture-result.md` before returning the result and
-  `references/architecture-constraints.md` before judging a dependency or call path.
-- Read `references/source-policy.md` when making a normative claim, choosing a source, or handling
-  Explicit Architecture or Clean Architecture terminology.
-- Read `references/hexagonal-architecture.md` only for selected or proposed Hexagonal / Ports and
-  Adapters work, including port roles, adapter direction, or application-service naming.
-- For implementation or code review, read `references/backend-guidance.md`. Retrieve current
-  upstream documentation before using exact framework or library APIs.
-- Read `references/package-and-type-semantics.md` when reviewing or changing package granularity, domain
-  type semantics, model naming, port/adapter naming, or marker-based architecture tests.
-- Read `references/architecture-testing.md` only when selecting, implementing, or reviewing
-  architecture validation.
-- For Java projects that use jfoundry, route confirmed architecture decisions to `using-jfoundry`
-  for framework-specific landing rather than treating the Java example as a jfoundry template.
+| Current task | Read |
+|---|---|
+| Conceptual explanation or documentation answer | No reference |
+| Judging a dependency or call path, or changing a boundary | `references/architecture-constraints.md` |
+| Making a normative claim, choosing a source, or handling Explicit Architecture or Clean Architecture terminology | `references/source-policy.md` |
+| Changing code or recommending structure | `references/backend-guidance.md`, using the shared sections and the one section for the stack chosen above. Retrieve current upstream documentation before using an exact framework or library API. |
+| Reviewing or changing package granularity, domain type semantics, model naming, port or adapter naming, or marker-based architecture tests | `references/package-and-type-semantics.md`, including its Package And Type Semantics Preflight |
+| Returning an architecture decision, review, or boundary-affecting recommendation | `references/architecture-result.md` |
+| Selected or proposed Hexagonal / Ports and Adapters work, including port roles, adapter direction, or application-service naming | `references/hexagonal-architecture.md` in addition to the constraints reference when a boundary is also in scope |
+| Selecting, implementing, or reviewing architecture validation | `references/architecture-testing.md`, using the one section for the stack chosen above |
+| Confirmed jfoundry landing for a Java project | `using-jfoundry`, instead of treating the Java example as a jfoundry template |
+
+When a selected reference has separate stack sections, read its shared sections and the one section for the stack chosen above. Do not apply another stack's section.

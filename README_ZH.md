@@ -83,7 +83,7 @@ claude plugin install domain-architecture@huahill
 
 ## 适用范围与限制
 
-- 核心领域建模和架构指导方法与语言、框架无关，但 Java/Kotlin 的实现指导最深入。C#/.NET、Go、Python 提供生态映射而非代码模板；`using-jfoundry` 仅适用于 Java。
+- 核心领域建模和架构指导方法与语言、框架无关，但 Java/Kotlin 的实现指导最深入。C#/.NET、Go、Python 提供生态映射而非代码模板；`using-jfoundry` 仅适用于 Java。智能体读取技能入口和当前任务选中的参考，而不是把整个插件当作一本手册读完。技术栈确定后，后端指导和架构测试只使用该技术栈的一节，不套用其他语言的写法。
 - 主要面向业务后端软件。客户端在拥有实质业务行为、离线工作流、同步冲突或本地持久化边界时可按需使用；本插件不提供移动端或前端平台的专项实现模板。
 - 领域建模可以区分业务能力、子域、限界上下文和上下文映射，也能表达棕地系统中的现状与目标语义。它只按当前决策所需的深度记录业务规则、生命周期转换、不变量、聚合及其他战术模式。
 - 不要把 DDD、端口与适配器、CQRS、仓储或分层架构强行套到简单 CRUD、薄客户端或小脚本中。
@@ -91,7 +91,7 @@ claude plugin install domain-architecture@huahill
 ## 进阶使用
 
 - 只有在确认或明确要求 jfoundry 时才使用 `using-jfoundry`；框架尚未决定不会阻塞框架中立的领域建模和架构指导。其[架构落地说明](skills/using-jfoundry/references/architecture.md)保留已选架构风格，而不是替项目选择一种风格。
-- 在已确认使用 jfoundry 的项目中，每一处 Java 改动都要重新调用 `using-jfoundry`。选择 Maven、持久化、消息或运行时组装只是举例，不是全部触发条件。应用侧 Java 遵循所选发行版的语言基线，见 [Java 基线](skills/using-jfoundry/references/java-baseline.md)。注释风格留在业务项目自己的约定里。
+- 在已确认使用 jfoundry 的项目中，每一处 Java 改动都要重新调用 `using-jfoundry`。选择 Maven、持久化、消息或运行时组装只是举例，不是全部触发条件。重新调用时读取 Java 基线和这一处改动对应的一份参考；聚合持久化还要读取仓储参考，不读取该技能的其余参考。应用侧 Java 遵循所选发行版的语言基线，见 [Java 基线](skills/using-jfoundry/references/java-baseline.md)。注释风格留在业务项目自己的约定里。
 - 实施聚合持久化前，`using-jfoundry` 要求完成项目局部的 **Aggregate Persistence Preflight**，并建立仓储语义架构规则。该预检把聚合生命周期仓储与非聚合的读取、存储、CAS、租约和历史契约区分开；参见[持久化指导](skills/using-jfoundry/references/persistence-data-mappers.md)、[仓储契约](skills/using-jfoundry/references/repository-and-read-contracts.md)和[测试指导](skills/using-jfoundry/references/testing.md)。
 - Superpowers、SpecKit、OpenSpec 等流程伴侣是可选且由用户选择的。它们拥有自身的规格、规划、任务、实施、评审、文件和命令；本插件拥有专业结果和交接。[首次使用指南](skills/domain-architecture-workflow/references/first-use.md)定义了输入、责任归属、状态和返回规则。
 - 结构化交接契约以增量方式加入，不改变专业结果的所有权，也不要求工作流引擎。仓库在 `scripts/` 中提供基于标准库的交接校验、阻塞项解决后生成新修订版本，以及摘要/完整 Markdown 投影工具；数据库持久化和分布式恢复仍不在当前阶段。当前契约见 [handoff-contract.md](skills/domain-architecture-workflow/references/handoff-contract.md)，其 JSON Schema 见[这里](schemas/domain-architecture-handoff.schema.json)。

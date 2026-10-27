@@ -63,6 +63,25 @@ class JFoundryGuidanceTests(unittest.TestCase):
         ):
             self.assertIn(required, text)
 
+    def test_jfoundry_java_edit_reads_baseline_plus_one_concern(self):
+        text = (USING_JFOUNDRY / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("references/java-baseline.md", text)
+        self.assertIn("Do not read the other references", text)
+        self.assertIn("references/persistence-data-mappers.md", text)
+        self.assertIn("references/repository-and-read-contracts.md", text)
+        self.assertNotIn(
+            "Read `references/implementation-guidance-result.md` for setup, modification, or framework-landing work.",
+            text,
+        )
+
+    def test_workflow_scenarios_are_not_a_consumer_reference(self):
+        skill = (WORKFLOW / "SKILL.md").read_text(encoding="utf-8")
+        self.assertNotIn("workflow-scenarios.md", skill)
+        self.assertFalse((WORKFLOW / "references" / "workflow-scenarios.md").exists())
+        fixture = ROOT / "tests" / "fixtures" / "workflow-scenarios.md"
+        self.assertTrue(fixture.is_file())
+        self.assertIn("## Scenario 25:", fixture.read_text(encoding="utf-8"))
+
     def test_jfoundry_exception_guidance_requires_preflight_and_guardrails(self):
         text = (USING_JFOUNDRY / "references" / "exception-handling.md").read_text(encoding="utf-8")
         self.assertIn("Exception And Problem Contract Preflight", text)

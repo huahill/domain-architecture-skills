@@ -35,7 +35,7 @@ Read [references/implementation-planning.md](references/implementation-planning.
 
 Read [references/workflow-results.md](references/workflow-results.md) before coordinating phases. Require each specialist to return its own phase-specific payload in the shared result envelope. Check phase status and combine results without rewriting specialist guidance. When a phase reports `needs-input`, pause only dependent progression, preserve completed results, produce an interim handoff with blockers, and ask the smallest blocking question. Treat process companions as optional and user-selected; never make this workflow depend on one.
 
-- Read [workflow scenarios](references/workflow-scenarios.md) when reviewing or validating routing behavior.
+Do not read this skill directory recursively. Open one of the references above only when its condition matches.
 
 ## Handoff Rules
 

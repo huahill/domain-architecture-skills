@@ -28,6 +28,21 @@ class ArchitectureGuidanceTests(unittest.TestCase):
         self.assertIn("state-changing domain behavior", text)
         self.assertIn("Bounded Context Crossings", text)
 
+    def test_guidance_reads_only_matching_references(self):
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("Do not read the skill directory recursively", text)
+        self.assertIn("Skip every row that does not match", text)
+        self.assertIn("references/architecture-constraints.md", text)
+        self.assertIn("the one section for the stack chosen", text)
+        self.assertNotIn(
+            "Apply source hierarchy from `references/source-policy.md` before citing",
+            text,
+        )
+        self.assertNotIn(
+            "Apply backend implementation guidance from `references/backend-guidance.md` when changing code",
+            text,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
