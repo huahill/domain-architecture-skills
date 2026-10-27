@@ -11,7 +11,7 @@ Use this skill for downstream applications that adopt VAdmin, not for changing V
 
 1. Confirm the application runs on Java 25 with Vaadin Flow 25.x on the classpath. If Vaadin Flow is not yet present, the starter brings it in transitively.
 2. Confirm the runtime. VAdmin currently supports Spring Boot as the only runtime; other runtimes (Helidon, Quarkus) are future adapters. Record an undecided runtime as a pending choice and do not block framework-neutral module declaration.
-3. Read the runtime adapter reference for the confirmed runtime. Currently `references/spring-boot-runtime.md` is the only runtime reference. Add the starter dependency and configure Vaadin package discovery.
+3. Read the runtime adapter reference for the confirmed runtime. Currently `references/spring-boot-runtime.md` is the only runtime reference. Import `vadmin-bom`, add the versionless starter, configure Vaadin package discovery, and follow `references/production-anchor.md` for the production frontend plugin version.
 4. Confirm the database and identity strategy. The default local IAM needs a PostgreSQL database; a self-provided identity strategy can disable it. Read `references/identity.md` for the three strategies. Self-provided identity contract implementations belong in outbound adapters; the composition root only wires them.
 5. Read `references/module-declaration.md` and declare each business `AdminModule` bean with module ID, pages, permissions, icon keys, and bilingual translation bundles. Read `references/production-anchor.md` and add `@Uses` anchors for each dynamic view.
 6. Run the narrowest relevant Maven verification and return the VAdmin Implementation Guidance Result.

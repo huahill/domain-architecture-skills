@@ -7,13 +7,22 @@ source of truth.
 
 ## Dependency
 
-Add the VAdmin Spring Boot starter to the application. The starter aggregates the
-default shell, system administration, module assembly, and all Spring adapters in
-one dependency.
+Import `vadmin-bom`, then add `vadmin-spring-boot-starter` without its own
+version. `${vadmin.version}` is the only VAdmin version the consumer writes.
+Do not define `vaadin.version` or import `vaadin-bom`.
+
+The starter aggregates the default shell, system administration, module assembly,
+and all Spring adapters in one dependency.
+
+VAdmin does not manage Spring Boot. The application keeps its own Spring Boot
+parent or dependency management. Do not copy a Spring Boot version from VAdmin.
 
 For `spring-boot:run` development, also add Vaadin's optional development server
 directly. It is intentionally not transitive and is excluded from the production
 artifact.
+
+The production frontend plugin cannot be managed by the BOM. Follow
+`production-anchor.md` for its version.
 
 ## Vaadin Package Discovery
 

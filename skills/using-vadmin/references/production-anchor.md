@@ -1,5 +1,17 @@
 # Production Frontend Anchor
 
+## Production Frontend Plugin
+
+`vadmin-bom` manages `flow-server-production-mode`. A Maven BOM cannot manage
+`flow-maven-plugin`, so the plugin needs an explicit version.
+
+That version must equal the Flow version managed by the Vaadin platform BOM
+imported by the selected `vadmin-bom` release. It can be a newer patch than the
+platform number. Do not use the platform number as the plugin version.
+
+Read the version from the selected VAdmin release deployment guide. This skill
+does not record it.
+
 ## Why An Anchor Is Needed
 
 VAdmin registers consumer view routes dynamically from `AdminModule` metadata at
