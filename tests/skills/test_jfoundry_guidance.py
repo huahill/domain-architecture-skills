@@ -97,6 +97,20 @@ class JFoundryGuidanceTests(unittest.TestCase):
         ):
             self.assertIn(required, text)
 
+    def test_jfoundry_exception_guidance_owns_remote_business_rejection(self):
+        text = (USING_JFOUNDRY / "references" / "exception-handling.md").read_text(encoding="utf-8")
+        for required in (
+                "business-failure envelope",
+                "normalize protocol-level failures inside the SDK",
+                "must not by itself select retryability",
+                "mean absence on one endpoint and rejection on another",
+                "must state the remote business reason",
+                "deterministic remote rejections",
+                "not retryable",
+                "interpreted per endpoint",
+        ):
+            self.assertIn(required, text)
+
     def test_jfoundry_testing_requires_exception_and_problem_rules(self):
         text = TESTING.read_text(encoding="utf-8")
         self.assertIn("Exception and problem mapping rules", text)
