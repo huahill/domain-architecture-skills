@@ -21,20 +21,28 @@ development mode but is missing from the production artifact.
 
 ## How To Add The Anchor
 
-Put one `@Uses` annotation on the application's Spring Boot configuration class for
-each consumer dynamic view:
+Flow follows `@Uses` only from an entry point such as a `VaadinServiceInitListener`.
+A Spring Boot application class is not an entry point, so `@Uses` on that class does
+not put the view or its components, such as `TextArea`, into the production bundle.
+
+Subclass `io.github.huahill.vadmin.flow.navigation.AdminModuleViewAnchor` and put one
+`@Uses` on the subclass for each consumer dynamic view:
 
 ```java
 @Uses(InventoryView.class)
 @Uses(OrderDetailView.class)
-@SpringBootApplication
-public class InventoryApplication {
+public final class InventoryFrontendAnchor extends AdminModuleViewAnchor {
 }
 ```
 
+Place the subclass with the module's inbound adapter. One subclass can anchor every
+dynamic view. Flow discovers it by subtype scan.
+
 ## Rules
 
-- Add `@Uses` only for consumer views declared in a business `AdminModule`.
+- Add `@Uses` only for consumer views declared in a business `AdminModule`, and only on the `AdminModuleViewAnchor` subclass.
+- Do not put `@Uses` on the Spring Boot application class or any other class that Flow does not visit.
+- Do not register the subclass as a Spring bean or through `META-INF/services`. The inherited `serviceInit` is empty and final.
 - Do not add `@Uses` for VAdmin's built-in system views (Users, Roles, Permissions,
   Audit). VAdmin owns those anchors.
 - Do not put `@Route` on a consumer view. Route registration is driven by module

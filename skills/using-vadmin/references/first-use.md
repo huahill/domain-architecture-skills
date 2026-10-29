@@ -21,7 +21,7 @@ The agent should:
 3. Read `spring-boot-runtime.md` for the confirmed runtime, then import `vadmin-bom`, add the versionless starter, and configure Vaadin package discovery. Follow `production-anchor.md` for the production frontend plugin version.
 4. Resolve the identity strategy. Local IAM needs PostgreSQL; self-provided identity can disable it. Read `identity.md`. When identity is self-provided, implement VAdmin identity contracts as outbound adapters and wire them from the composition root.
 5. Declare each business `AdminModule` bean. Read `module-declaration.md` for the required metadata.
-6. Add `@Uses` production anchors for each dynamic view. Read `production-anchor.md`.
+6. Subclass `AdminModuleViewAnchor` and add one `@Uses` for each dynamic view. Read `production-anchor.md`. Do not put those annotations on the Spring Boot application class.
 7. Run Maven verification.
 
 ## Architecture-Neutral Defaults

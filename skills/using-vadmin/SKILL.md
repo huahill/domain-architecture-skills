@@ -13,7 +13,7 @@ Use this skill for downstream applications that adopt VAdmin, not for changing V
 2. Confirm the runtime. VAdmin currently supports Spring Boot as the only runtime; other runtimes (Helidon, Quarkus) are future adapters. Record an undecided runtime as a pending choice and do not block framework-neutral module declaration.
 3. Read the runtime adapter reference for the confirmed runtime. Currently `references/spring-boot-runtime.md` is the only runtime reference. Import `vadmin-bom`, add the versionless starter, configure Vaadin package discovery, and follow `references/production-anchor.md` for the production frontend plugin version.
 4. Confirm the database and identity strategy. The default local IAM needs a PostgreSQL database; a self-provided identity strategy can disable it. Read `references/identity.md` for the three strategies. Self-provided identity contract implementations belong in outbound adapters; the composition root only wires them.
-5. Read `references/module-declaration.md` and declare each business `AdminModule` bean with module ID, pages, permissions, icon keys, and bilingual translation bundles. Read `references/production-anchor.md` and add `@Uses` anchors for each dynamic view.
+5. Read `references/module-declaration.md` and declare each business `AdminModule` bean with module ID, pages, permissions, icon keys, and bilingual translation bundles. Read `references/production-anchor.md` and subclass `AdminModuleViewAnchor`, adding one `@Uses` on that subclass for each dynamic view.
 6. Run the narrowest relevant Maven verification and return the VAdmin Implementation Guidance Result.
 
 ## Non-Negotiable Boundaries
@@ -23,6 +23,7 @@ Use this skill for downstream applications that adopt VAdmin, not for changing V
 - Do not bypass the service-level permission check. Navigation visibility and route guards improve the experience; the authoritative boundary is in the application or platform use case.
 - Do not register a global stylesheet, mutate global theme properties, or target Vaadin component internals from a business module. Keep domain-specific CSS scoped to a module-owned component class.
 - Do not add `@Uses` for VAdmin's built-in system views. VAdmin owns those production anchors.
+- Do not put `@Uses` on the Spring Boot application class. Flow does not visit that class while building the production bundle. Subclass `AdminModuleViewAnchor` instead.
 - Do not partially replace the shell. A custom shell is an explicit complete replacement.
 - Do not implement VAdmin identity or audit contracts in the composition root. Those are secondary adapters.
 - Do not model host IAM tables as the host's aggregate repositories.

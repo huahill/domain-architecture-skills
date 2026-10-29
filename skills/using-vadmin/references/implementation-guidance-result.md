@@ -37,7 +37,7 @@ VAdmin Implementation Guidance Result
 
 - The confirmed runtime and identity strategy.
 - Each declared module with its pages, permissions, and translation bundles.
-- Whether `@Uses` production anchors are in place for every dynamic view.
+- Whether every dynamic view has `@Uses` on a subclass of `AdminModuleViewAnchor`. `@Uses` on the Spring Boot application class does not count.
 - Whether the default shell is retained or a full replacement is intended.
 - Assumptions made when the user did not specify a choice.
 - Unresolved choices that do not block the current step but should be tracked.
