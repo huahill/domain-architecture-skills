@@ -7,6 +7,19 @@ MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
 
 class MarketplaceManifestTests(unittest.TestCase):
+    def test_release_versions_agree(self):
+        codex = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        claude = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        marketplace = json.loads(
+            (ROOT / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8")
+        )
+        base, separator, cachebuster = codex["version"].partition("+codex.")
+        self.assertTrue(separator)
+        self.assertRegex(cachebuster, r"^\d{14}$")
+        self.assertEqual(claude["version"], base)
+        self.assertEqual(marketplace["metadata"]["version"], base)
+        self.assertEqual(marketplace["plugins"][0]["version"], base)
+
     def test_codex_plugin_category_is_developer_tools(self):
         plugin = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(plugin["interface"]["category"], "Developer Tools")

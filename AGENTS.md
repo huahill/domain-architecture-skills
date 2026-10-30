@@ -212,6 +212,8 @@ Do not treat Clean Architecture as a wholly new, standalone architecture. Use it
 - Use one canonical SemVer release version for the plugin. Keep it synchronized across
   `.claude-plugin/plugin.json`, both version fields in `.claude-plugin/marketplace.json`, and the
   base version before `+` in `.codex-plugin/plugin.json`.
+- Treat a version edit as incomplete when it changes only one side. Update all four fields in the
+  same change. Codex and Claude install from different manifests and do not correct each other.
 - Increment `MAJOR` for incompatible public plugin or result-contract changes, `MINOR` for
   backward-compatible capabilities, skills, or result sections, and `PATCH` for compatible fixes
   and clarifications. While the plugin is below `1.0.0`, use the next `MINOR` for incompatible
@@ -241,6 +243,8 @@ Before publishing, check:
 - `.agents/plugins/marketplace.json` remains present and points at the repository root plugin.
 - `.claude-plugin/marketplace.json` remains present and validates with `claude plugin validate --strict`.
 - All release-version fields agree, excluding the Codex `+codex.<cachebuster>` suffix.
+  `tests/plugin/test_marketplace.py` enforces this; run it when editing any manifest version,
+  not only before publishing.
 - Every `skills/*/SKILL.md` has valid YAML frontmatter with `name` and `description`.
 - `domain-architecture-workflow` does not hard-depend on superpowers or any other external workflow skill.
 - `tests/fixtures/workflow-scenarios.md` is not linked from `skills/domain-architecture-workflow/SKILL.md`.
