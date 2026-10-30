@@ -58,10 +58,6 @@ application startup.
 
 ## Using Shared Page Patterns
 
-VAdmin provides high-level Flow patterns for common admin workflows: `AdminPageFrame`,
-`PageHeader`, `PageToolbar`, and `DataWorkspace`. Use these for standard list, detail,
-and edit pages instead of assembling layout primitives. Keep domain-specific CSS scoped
-to a module-owned component class and based on documented Vaadin component APIs.
-
-Route exact VAdmin types, API signatures, and pattern names to the selected release
-documentation.
+Declare the page metadata here, then implement the view from `page-interactions.md`.
+Standard list, detail, and edit workflows use VAdmin's shared patterns instead of
+layout primitives. Route exact type semantics to the selected release documentation.

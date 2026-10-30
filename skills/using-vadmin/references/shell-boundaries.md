@@ -14,14 +14,14 @@ theme, `AppShellConfigurator`, or system pages.
   theme internals.
 - Do not register a global stylesheet, mutate global theme properties, or target
   Vaadin component internals from a business module.
-- Do not depend on VAdmin visual-language-specific CSS selectors or tokens from a
-  business module.
+- Do not depend on shell or theme selectors or tokens from a business module.
 
-## Business Module CSS
+## Business Module Presentation
 
-Keep CSS scoped to a module-owned component class. Use documented Vaadin component
-variants and Lumo base-style properties. VAdmin handles visual-language-specific
-presentation for its own shell and system pages.
+Do not add business-module CSS. A business view uses the shared patterns in
+`page-interactions.md` and documented Vaadin component variants, such as button
+priority. VAdmin ships Aura for the shell and system pages. There is no consumer
+appearance setting, and a business module does not retarget component internals.
 
 ## Full Shell Replacement
 

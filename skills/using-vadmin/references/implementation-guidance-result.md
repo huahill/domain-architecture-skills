@@ -11,7 +11,6 @@ VAdmin Implementation Guidance Result
   status: completed | needs-input
   runtime: Spring Boot | undecided
   identity: local-iam | oidc | self-provided | undecided
-  visual-language: vaadin | ant | undecided
   modules:
     - module-id
       pages: [page-id, ...]
@@ -33,11 +32,18 @@ VAdmin Implementation Guidance Result
   is unknown and database setup depends on it). Preserve completed results, emit an
   interim result, and ask the smallest blocking question.
 
+## Migration
+
+Results from 0.6.1 recorded a consumer appearance choice. Omit that field. VAdmin
+ships Aura, and a business view follows `page-interactions.md` instead of selecting
+an appearance.
+
 ## What To Record
 
 - The confirmed runtime and identity strategy.
 - Each declared module with its pages, permissions, and translation bundles.
 - Whether every dynamic view has `@Uses` on a subclass of `AdminModuleViewAnchor`. `@Uses` on the Spring Boot application class does not count.
 - Whether the default shell is retained or a full replacement is intended.
+- Whether each business view follows `page-interactions.md`, including busy, no data, filtered-empty, failure, and confirmation where those conditions apply.
 - Assumptions made when the user did not specify a choice.
 - Unresolved choices that do not block the current step but should be tracked.

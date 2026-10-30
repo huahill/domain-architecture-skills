@@ -133,6 +133,8 @@ Keep in `using-vadmin`:
 - What the project must not reinvent: the shell, theme, system pages, route registration,
   permission catalog, and composite translations.
 - Version-aware routing to the selected VAdmin release documentation.
+- Which shared administration page pattern a business view uses, and which interaction
+  states that view must cover. Route pattern APIs to the selected release documentation.
 - Runtime branching: Spring Boot is the only supported runtime today; the skill structure
   allows future `helidon-runtime.md` or `quarkus-runtime.md` references without restructuring.
 
@@ -143,6 +145,8 @@ Do not keep in `using-vadmin`:
 - Method signatures, API call sequences, or Vaadin component internals.
 - A project-local incident, investigation, or workaround, unless it has become a stable
   downstream contract that every affected project must follow.
+- A consumer appearance or visual-language choice. VAdmin ships Aura; business modules
+  do not restyle it.
 
 Stable VAdmin type names may appear when they identify a landing or an anti-reinvention rule
 (`AdminModule`, `AdminPage`, `AdminHostLayout`). Route their exact semantics and

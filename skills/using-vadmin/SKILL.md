@@ -1,6 +1,6 @@
 ---
 name: using-vadmin
-description: Guide AI agents and developers when adding or modifying VAdmin administration capabilities in a Java application. Use for runtime adapter selection, dependency setup, AdminModule declaration, permission and translation resources, production frontend anchors, identity and access configuration, and shell boundary decisions. Re-invoke when adding modules, changing identity strategy, or modifying the default shell. Do not use for maintaining VAdmin internals.
+description: Guide AI agents and developers when adding or modifying VAdmin administration capabilities in a Java application. Use for runtime adapter selection, dependency setup, AdminModule declaration, permission and translation resources, production frontend anchors, identity and access configuration, shell boundary decisions, and administration page interaction. Re-invoke when adding modules, adding or changing a business administration view, changing identity strategy, or modifying the default shell. Do not use for maintaining VAdmin internals.
 ---
 
 # Using VAdmin
@@ -14,14 +14,15 @@ Use this skill for downstream applications that adopt VAdmin, not for changing V
 3. Read the runtime adapter reference for the confirmed runtime. Currently `references/spring-boot-runtime.md` is the only runtime reference. Import `vadmin-bom`, add the versionless starter, configure Vaadin package discovery, and follow `references/production-anchor.md` for the production frontend plugin version.
 4. Confirm the database and identity strategy. The default local IAM needs a PostgreSQL database; a self-provided identity strategy can disable it. Read `references/identity.md` for the three strategies. Self-provided identity contract implementations belong in outbound adapters; the composition root only wires them.
 5. Read `references/module-declaration.md` and declare each business `AdminModule` bean with module ID, pages, permissions, icon keys, and bilingual translation bundles. Read `references/production-anchor.md` and subclass `AdminModuleViewAnchor`, adding one `@Uses` on that subclass for each dynamic view.
-6. Run the narrowest relevant Maven verification and return the VAdmin Implementation Guidance Result.
+6. When adding or changing a business administration view, read `references/page-interactions.md` and compose that view from the shared pattern for its workflow.
+7. Run the narrowest relevant Maven verification and return the VAdmin Implementation Guidance Result.
 
 ## Non-Negotiable Boundaries
 
 - Do not copy or recreate the default shell, theme, system administration pages, or `AppShellConfigurator`. VAdmin owns them.
 - Do not put `@Route` on a consumer view. VAdmin registers routes from `AdminModule` page metadata.
 - Do not bypass the service-level permission check. Navigation visibility and route guards improve the experience; the authoritative boundary is in the application or platform use case.
-- Do not register a global stylesheet, mutate global theme properties, or target Vaadin component internals from a business module. Keep domain-specific CSS scoped to a module-owned component class.
+- Do not add business-module CSS, register a stylesheet, mutate theme properties, or target Vaadin component internals. Business views use shared page patterns and documented Vaadin component variants.
 - Do not add `@Uses` for VAdmin's built-in system views. VAdmin owns those production anchors.
 - Do not put `@Uses` on the Spring Boot application class. Flow does not visit that class while building the production bundle. Subclass `AdminModuleViewAnchor` instead.
 - Do not partially replace the shell. A custom shell is an explicit complete replacement.
@@ -38,6 +39,7 @@ Use this skill for downstream applications that adopt VAdmin, not for changing V
 | Local IAM, OIDC, or self-provided identity | `references/identity.md` |
 | Shell ownership and full-replacement boundary | `references/shell-boundaries.md` |
 | Spring Boot runtime adapter setup | `references/spring-boot-runtime.md` |
+| Business administration view interaction | `references/page-interactions.md` |
 | Result format, assumptions, and unresolved choices | `references/implementation-guidance-result.md` |
 
 Use the selected VAdmin release documentation as the source of truth for Maven coordinates, configuration properties, API signatures, and framework behavior. This skill deliberately does not maintain a dependency catalog or property reference for those versioned facts.

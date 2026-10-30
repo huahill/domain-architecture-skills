@@ -93,6 +93,7 @@ claude plugin install domain-architecture@huahill
 - 只有在确认或明确要求 jfoundry 时才使用 `using-jfoundry`；框架尚未决定不会阻塞框架中立的领域建模和架构指导。其[架构落地说明](skills/using-jfoundry/references/architecture.md)保留已选架构风格，而不是替项目选择一种风格。
 - 在已确认使用 jfoundry 的项目中，每一处 Java 改动都要重新调用 `using-jfoundry`。选择 Maven、持久化、消息或运行时组装只是举例，不是全部触发条件。重新调用时读取 Java 基线和这一处改动对应的一份参考；聚合持久化还要读取仓储参考，不读取该技能的其余参考。应用侧 Java 遵循所选发行版的语言基线，见 [Java 基线](skills/using-jfoundry/references/java-baseline.md)。注释风格留在业务项目自己的约定里。
 - 实施聚合持久化前，`using-jfoundry` 要求完成项目局部的 **Aggregate Persistence Preflight**，并建立仓储语义架构规则。该预检把聚合生命周期仓储与非聚合的读取、存储、CAS、租约和历史契约区分开；参见[持久化指导](skills/using-jfoundry/references/persistence-data-mappers.md)、[仓储契约](skills/using-jfoundry/references/repository-and-read-contracts.md)和[测试指导](skills/using-jfoundry/references/testing.md)。
+- `using-vadmin` 同时约束业务管理页面。这些页面使用 VAdmin 的共享页面模式和产品自带的 Aura 外观，不另选外观，不为业务模块添加 CSS，也不用手搭布局替换共享模式。见[页面交互](skills/using-vadmin/references/page-interactions.md)。
 - Superpowers、SpecKit、OpenSpec 等流程伴侣是可选且由用户选择的。它们拥有自身的规格、规划、任务、实施、评审、文件和命令；本插件拥有专业结果和交接。[首次使用指南](skills/domain-architecture-workflow/references/first-use.md)定义了输入、责任归属、状态和返回规则。
 - 结构化交接契约以增量方式加入，不改变专业结果的所有权，也不要求工作流引擎。仓库在 `scripts/` 中提供基于标准库的交接校验、阻塞项解决后生成新修订版本，以及摘要/完整 Markdown 投影工具；数据库持久化和分布式恢复仍不在当前阶段。当前契约见 [handoff-contract.md](skills/domain-architecture-workflow/references/handoff-contract.md)，其 JSON Schema 见[这里](schemas/domain-architecture-handoff.schema.json)。
 - 交接消费方可以请求摘要或完整投影。持久化产物可以声明敏感性分类和脱敏要求；流程伴侣消费契约和引用，但仍然拥有自己的规划与执行状态。

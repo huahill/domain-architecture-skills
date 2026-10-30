@@ -9,7 +9,6 @@ Use $using-vadmin to add VAdmin administration to a Java application.
 Base package: PACKAGE_NAME
 Runtime: Spring Boot, undecided
 Identity: local IAM, OIDC, self-provided, or undecided
-Visual language: vaadin, ant, or undecided
 ```
 
 ## Agent Sequence
@@ -21,8 +20,9 @@ The agent should:
 3. Read `spring-boot-runtime.md` for the confirmed runtime, then import `vadmin-bom`, add the versionless starter, and configure Vaadin package discovery. Follow `production-anchor.md` for the production frontend plugin version.
 4. Resolve the identity strategy. Local IAM needs PostgreSQL; self-provided identity can disable it. Read `identity.md`. When identity is self-provided, implement VAdmin identity contracts as outbound adapters and wire them from the composition root.
 5. Declare each business `AdminModule` bean. Read `module-declaration.md` for the required metadata.
-6. Subclass `AdminModuleViewAnchor` and add one `@Uses` for each dynamic view. Read `production-anchor.md`. Do not put those annotations on the Spring Boot application class.
-7. Run Maven verification.
+6. Implement each business view from `page-interactions.md`.
+7. Subclass `AdminModuleViewAnchor` and add one `@Uses` for each dynamic view. Read `production-anchor.md`. Do not put those annotations on the Spring Boot application class.
+8. Run Maven verification.
 
 ## Architecture-Neutral Defaults
 
@@ -31,8 +31,8 @@ Use these defaults when the user asks for scaffolding and the choice is independ
 - Java 25
 - Spring Boot runtime (the only currently supported runtime)
 - Local IAM enabled (default PostgreSQL + Flyway)
-- `vaadin` visual language
 - No OIDC unless explicitly requested
+- Aura appearance as shipped by VAdmin, with no business-module CSS
 
 ## When To Ask Before Proceeding
 

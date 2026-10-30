@@ -6,4 +6,3 @@ interface:
     Base package: PACKAGE_NAME
     Runtime: Spring Boot, undecided
     Identity: local IAM, OIDC, self-provided, or undecided
-    Visual language: vaadin, ant, or undecided
