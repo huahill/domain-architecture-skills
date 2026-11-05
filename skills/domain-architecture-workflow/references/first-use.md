@@ -28,6 +28,7 @@ Start from available project evidence. Useful inputs include:
 - existing architecture and constraints that must be preserved;
 - language, runtime, persistence, messaging, and other technology constraints;
 - whether jfoundry is used, not used, or undecided;
+- whether VAdmin is used, not used, or undecided;
 - the desired next activity, such as specification review, planning, task generation, implementation, or architecture review;
 - an explicitly selected or already active process companion, if any.
 
@@ -45,17 +46,20 @@ Known rules and evidence:
 Existing project or artifacts:
 Technology constraints:
 JFoundry: yes | no | undecided
+VAdmin: yes | no | undecided
 Process companion: none
 Desired next activity:
 
 Return the applicable specialist results and a Domain Architecture Handoff.
 ```
 
-The specialists produce, and the coordinator consumes, `Domain Modeling Result`, `Architecture Guidance Result`, and, only when jfoundry applies, `JFoundry Implementation Guidance Result`. The coordinator then produces `Domain Architecture Handoff` for the next activity.
+The specialists produce, and the coordinator consumes, `Domain Modeling Result`, `Architecture Guidance Result`, and, only when that landing applies, `JFoundry Implementation Guidance Result` or `VAdmin Implementation Guidance Result`. The coordinator then produces `Domain Architecture Handoff` for the next activity.
 
 `JFoundry: undecided` does not block framework-neutral Domain Modeling or Architecture Guidance and does not by itself invoke `using-jfoundry`. Preserve the uncertainty as a pending optional landing. Ask about it only when the next activity requires framework-specific implementation guidance and the choice materially changes that activity.
 
-`Domain Architecture Handoff` is the coordinator-owned composite interoperability result. It preserves phase states, specialist summaries or artifacts, scoped strategic and tactical decisions, relevant context relationships, current/target distinctions, constraints, open questions and dependent blockers, framework landing or non-applicability, and the recommended next activity. It does not replace specialist payloads and does not require a fixed file format. When persisted, workflow artifacts use `docs/domain-architecture/`.
+`VAdmin: undecided` follows the same rule. Do not invoke `using-vadmin` or block framework-neutral phases because administration adoption is unresolved.
+
+`Domain Architecture Handoff` is the coordinator-owned composite interoperability result. It preserves phase states, specialist summaries or artifacts, scoped strategic and tactical decisions, relevant context relationships, current/target distinctions, constraints, open questions and dependent blockers, both optional landings or their non-applicability, and the recommended next activity. It does not replace specialist payloads. An in-conversation result may stay textual. When persisted, `docs/domain-architecture/handoff.json` is the canonical current handoff at contract `1.1`, and `handoff.md` is rendered from it.
 
 When the structured contract is used, it is the canonical machine-readable handoff and the textual
 result is a projection for review. Its revision and blocker references allow a later activity to
@@ -73,7 +77,7 @@ A process companion is optional. Honor one explicitly selected by the user or al
 | Owner | Responsibilities |
 |---|---|
 | Process companion | Its requirements/specification lifecycle, planning, task generation, implementation, review, approval gates, files, directories, commands, and templates |
-| Domain Architecture plugin | Domain Modeling, Architecture Guidance, optional jfoundry landing, phase-local status, `Domain Architecture Handoff`, and its default `docs/domain-architecture/` artifacts |
+| Domain Architecture plugin | Domain Modeling, Architecture Guidance, optional jfoundry landing, optional VAdmin landing, phase-local status, `Domain Architecture Handoff`, and its default `docs/domain-architecture/` artifacts |
 
 Use the companion's own mechanisms to persist or consume results. Do not assume, create, or reproduce its internal paths, commands, templates, or artifact layout unless that active workflow explicitly requires them. A companion may help produce initial requirement material, but it must consume the Domain Architecture Handoff before finalizing a detailed implementation plan or dependent tasks.
 
@@ -85,6 +89,7 @@ requirements or specification
 -> Domain Modeling Result
 -> Architecture Guidance Result
 -> optional JFoundry Implementation Guidance Result
+-> optional VAdmin Implementation Guidance Result
 -> Domain Architecture Handoff
 -> companion-owned planning, tasks, implementation, and review
 ```
@@ -109,7 +114,7 @@ Use the same contract with SpecKit, OpenSpec, or another specification workflow:
 Use the active specification workflow as the process companion.
 After an initial specification exists and before downstream planning or task
 generation, use $domain-architecture-workflow for Domain Modeling, Architecture
-Guidance, and optional jfoundry landing. Return Domain Architecture Handoff as
+Guidance, optional jfoundry landing, and optional VAdmin landing. Return Domain Architecture Handoff as
 input to the companion's next activity. Keep the companion's files, commands,
 templates, and approval gates under that companion's control.
 ```

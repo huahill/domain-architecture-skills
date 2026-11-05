@@ -1,6 +1,6 @@
 ---
 name: domain-architecture-workflow
-description: "Use when a business software project needs an end-to-end domain and architecture workflow: understanding requirements, modeling domains, deciding DDD/Hexagonal/Onion/CQRS boundaries, planning implementation, or handing off to framework-specific guidance such as jfoundry. Does not require any external workflow skill."
+description: "Use when a business software project needs an end-to-end domain and architecture workflow: understanding requirements, modeling domains, deciding DDD/Hexagonal/Onion/CQRS boundaries, planning implementation, or handing off to framework-specific guidance such as jfoundry or VAdmin. Does not require any external workflow skill."
 ---
 
 # Domain Architecture Workflow
@@ -16,16 +16,18 @@ If another planning, TDD, or review workflow is already active, use this skill o
 1. Understand the business goal, acceptance expectations, actors, workflows, constraints, and uncertainty; select the decision scope and strategic, tactical, or combined modeling depth required by the requested outcome.
 2. Use `domain-modeling` for non-trivial business behavior or strategic domain decisions and consume its `Domain Modeling Result`. The coordinator selects the required depth; it does not perform or rewrite the specialist's modeling method.
 3. Use `domain-architecture-guidance` to choose appropriate boundaries and consume its `Architecture Guidance Result`.
-4. Use `using-jfoundry` only when applicable and after domain and architecture assumptions are clear. If jfoundry use is undecided, continue framework-neutral phases without invoking it and defer the choice until a framework-specific next activity materially requires it.
-5. Produce a composite `Domain Architecture Handoff` that makes planning readiness, dependent blockers, and the next owner explicit.
-6. Persist workflow-owned artifacts under the default documentation directory, then route detailed planning to its `plans` subdirectory or to the user-selected process companion. The companion alone owns its plan files, tasks, and execution state.
-7. During implementation or review, consume the persisted handoff as this project's decisions. Re-invoke the specialist whose concern is being implemented even when that phase is already `completed`. In a confirmed jfoundry project, every Java change is a `using-jfoundry` concern, including domain and application code; Maven, persistence, messaging, and runtime assembly are examples, not the whole trigger. Revisit modeling or architecture only when changed business meaning, drift, or conflicts invalidate assumptions. Write back only newly confirmed project decisions; do not copy specialist tutorials into the handoff.
+4. Use `using-jfoundry` only when the project uses jfoundry or the user asks for that landing, and only after domain and architecture assumptions are clear. If jfoundry is unused or undecided, do not invoke it.
+5. Use `using-vadmin` only when the project adopts VAdmin or the user asks for that landing. If VAdmin is unused or undecided, do not invoke it. Neither unused nor undecided framework choice blocks framework-neutral modeling or architecture guidance.
+6. Produce a composite `Domain Architecture Handoff` that makes planning readiness, dependent blockers, and the next owner explicit. Record both optional landings as `not-applicable` or pending, with the reason, without invoking a specialist only to fill that phase.
+7. Persist the current handoff as `docs/domain-architecture/handoff.json`, then route detailed planning to its `plans` subdirectory or to the user-selected process companion. The companion alone owns its plan files, tasks, and execution state.
+8. During implementation or review, consume the persisted handoff as this project's decisions. Re-invoke the specialist whose concern is being implemented even when that phase is already `completed`. In a confirmed jfoundry project, every Java change is a `using-jfoundry` concern, including domain and application code; Maven, persistence, messaging, and runtime assembly are examples, not the whole trigger. In a confirmed VAdmin project, administration changes re-invoke `using-vadmin`. Resolve the current jfoundry or VAdmin release from the project build and that release's documentation; do not trust a version copied into the handoff. Revisit modeling or architecture only when changed business meaning, drift, or conflicts invalidate assumptions. Write back only newly confirmed project decisions.
 
 ## Skill Routing
 
 - Use `domain-modeling` for requirements-to-model work: business landscapes and capabilities, system decomposition or modernization, multi-team ownership, Subdomains, Bounded Contexts, Context Maps and context relationships, current/target semantic conflicts, ubiquitous language, business commands, events, aggregates, invariants, value objects, domain services, aggregate lifecycle/access needs, and read needs/read models.
 - Use `domain-architecture-guidance` for architecture decisions and reviews: dependency direction, Layered/Onion/Hexagonal/CQRS boundaries, jMolecules-style annotations, architecture tests, and source-aware rule interpretation.
 - Use `using-jfoundry` when the target project uses jfoundry, or the user explicitly asks for a jfoundry landing. Once jfoundry is confirmed, every Java change in that project is in scope, including domain and application code. Dependencies, package layout, annotations, repositories, persistence, messaging, runtime assembly, and ArchUnit are examples of landing concerns, not a closed trigger list. `Undecided` alone does not make this specialist applicable.
+- Use `using-vadmin` only when the target project adopts VAdmin, or the user explicitly asks for VAdmin administration. `Undecided` or `not used` does not make this specialist applicable and does not block earlier phases.
 
 ## Result And Handoff Routing
 
@@ -45,6 +47,7 @@ Do not read this skill directory recursively. Open one of the references above o
 - Keep open business questions visible before coding.
 - Attribute guidance to the right source: DDD concepts, architecture style constraints, framework conventions, heuristics, or project policies.
 - Keep this workflow independent. It can run alongside other process skills, but it must not require them.
-- Treat a `Domain Architecture Handoff` as planning input, not as a detailed implementation plan. Use the plugin's default documentation directory for workflow-owned artifacts and never reproduce a selected companion's process artifacts.
-- Persist project-specific decisions, constraints, and open questions. Do not copy specialist references, framework tutorials, or sample code into `docs/domain-architecture/`.
+- Treat a `Domain Architecture Handoff` as planning input, not as a detailed implementation plan. Persist its current form as `docs/domain-architecture/handoff.json`. Render `handoff.md` from that file and do not edit the projection by hand. Never reproduce a selected companion's process artifacts, an implementation roadmap, or an agent development guide.
+- Persist project-specific decisions, constraints, and open questions. Give each fact one owner: business meaning in the domain file, boundaries in the architecture file, and selected capabilities in the applicable landing file. Material domain items keep `confirmed`, `inferred`, or `proposed` plus evidence.
+- Do not copy a jfoundry or VAdmin release version, Maven coordinate, BOM, or framework mechanic into `docs/domain-architecture/`. Those products change. The project build selects the version, and the selected release supplies the mechanics.
 - A completed handoff does not replace specialist skills. Implementation still executes the relevant specialist for that increment's concern.

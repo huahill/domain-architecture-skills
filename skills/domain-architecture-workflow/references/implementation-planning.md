@@ -17,34 +17,55 @@ For a new project that persists workflow artifacts, use:
 
 ```text
 docs/domain-architecture/
+  handoff.json
+  handoff.md
   00-source-and-assumptions.md
   01-domain-modeling.md
   02-context-map.md
   03-architecture-guidance.md
   04-jfoundry-implementation-guidance.md
-  05-implementation-roadmap.md
+  vadmin-implementation-guidance.md
+  revisions/
   adr/
   plans/
 ```
 
-Create only artifacts that the request produces; the tree is a default organization, not a demand
-to create empty files. `02-context-map.md` is an optional specialist-owned artifact; the
-coordinator does not reconstruct the Context Map or create a parallel version. `plans/` holds
-detailed plans only when no process companion owns them.
+Create only artifacts that the request produces. `handoff.json` is required when a handoff is
+persisted; it is the current coordinator artifact and uses contract `1.1`. Render `handoff.md`
+from that JSON and do not edit the projection by hand. `02-context-map.md` is optional and
+specialist-owned; the coordinator does not reconstruct it. The two landing files exist only when
+that landing applies. Do not create `05-implementation-roadmap.md`, an agent development guide, or
+another tutorial in this directory. `plans/` holds detailed plans only when no process companion
+owns them.
+
+Before replacing `handoff.json`, copy the previous active document to
+`revisions/<handoff_id>.json` when its `handoff_id` differs. Do not edit a revision file. A changed
+decision is replaced in its owning specialist file and recorded in the new handoff revision's
+`invalidation`. Do not banner a current file as historical, and do not append a note that leaves
+the old statement in force.
 
 Existing documents outside this tree may be used as input evidence, but they do not change the
 plugin output location. Do not create a second plugin artifact tree.
 
 ## Artifact Depth
 
-Persisted workflow artifacts are this project's decision memory:
+Persisted workflow artifacts are this project's current decision memory. Each fact has one owner:
 
-- Record confirmed choices, constraints, accepted assumptions, open questions, and pointers to
-  specialist skills or upstream docs.
-- Do not copy specialist references, architecture textbooks, or framework how-to into these files.
-- A completed `04-jfoundry-implementation-guidance.md` names project landing choices such as BOM,
-  starters, package roles, and per-aggregate persistence adapter shape. It does not replace
-  `using-jfoundry` at implementation time.
+- `00-source-and-assumptions.md`: sources, scope constraints, and explicit non-assumptions.
+- `01-domain-modeling.md`: business meaning only. Each material item has `confirmed`, `inferred`,
+  or `proposed` and item-level evidence. No ports, packages, framework types, exception taxonomy,
+  or dependency coordinates.
+- `02-context-map.md`: context relationships and exchanged business meaning only.
+- `03-architecture-guidance.md`: selected style, dependency direction, boundaries, and validation
+  rules. No starter lists, coordinates, or method mechanics.
+- `04-jfoundry-implementation-guidance.md`: selected capabilities, package roles, and each
+  aggregate's adapter shape. It does not replace `using-jfoundry` during implementation.
+- `vadmin-implementation-guidance.md`: selected runtime, identity, modules, pages, and permissions.
+  It does not replace `using-vadmin` during administration work.
+
+Do not copy a jfoundry or VAdmin release version, BOM, or Maven coordinate into these files. Both
+products continue to release. The project build file selects the version; the selected release
+documentation supplies coordinates and mechanics. Resolve both again at implementation time.
 
 ## Select The Required Depth
 

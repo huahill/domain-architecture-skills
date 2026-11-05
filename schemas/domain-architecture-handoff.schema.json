@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/huahill/domain-architecture-skills/schemas/domain-architecture-handoff.schema.json",
   "title": "Domain Architecture Handoff",
-  "description": "Versioned coordinator-owned handoff for domain modeling, architecture guidance, and optional framework landing.",
+  "description": "Versioned coordinator-owned handoff for domain modeling, architecture guidance, and optional framework landing. Contract 1.0 remains readable. Contract 1.1 is written for a new persisted handoff and adds the VAdmin phase.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -26,7 +26,8 @@
   ],
   "properties": {
     "contract_version": {
-      "const": "1.0"
+      "type": "string",
+      "enum": ["1.0", "1.1"]
     },
     "lineage_id": {
       "type": "string",
@@ -171,6 +172,46 @@
           }
         }
       }
+    },
+    {
+      "if": {
+        "required": ["contract_version"],
+        "properties": {
+          "contract_version": {
+            "const": "1.1"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "phases": {
+            "allOf": [
+              {
+                "contains": {
+                  "type": "object",
+                  "required": ["phase"],
+                  "properties": {
+                    "phase": {
+                      "const": "jfoundry-implementation-guidance"
+                    }
+                  }
+                }
+              },
+              {
+                "contains": {
+                  "type": "object",
+                  "required": ["phase"],
+                  "properties": {
+                    "phase": {
+                      "const": "vadmin-implementation-guidance"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
     }
   ],
   "$defs": {
@@ -263,7 +304,8 @@
           "enum": [
             "domain-modeling",
             "architecture-guidance",
-            "jfoundry-implementation-guidance"
+            "jfoundry-implementation-guidance",
+            "vadmin-implementation-guidance"
           ]
         },
         "applicability": {
@@ -278,6 +320,10 @@
           "type": ["string", "null"],
           "minLength": 1
         },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
         "affects": {
           "type": "array",
           "items": {
@@ -286,6 +332,7 @@
               "domain-modeling",
               "architecture-guidance",
               "jfoundry-implementation-guidance",
+              "vadmin-implementation-guidance",
               "planning"
             ]
           },
@@ -298,7 +345,10 @@
             "required": ["phase"],
             "properties": {
               "phase": {
-                "const": "jfoundry-implementation-guidance"
+                "enum": [
+                  "jfoundry-implementation-guidance",
+                  "vadmin-implementation-guidance"
+                ]
               }
             }
           },
@@ -541,6 +591,7 @@
             "domain-modeling",
             "architecture-guidance",
             "jfoundry-implementation-guidance",
+            "vadmin-implementation-guidance",
             "planning"
           ]
         },
@@ -554,6 +605,7 @@
               "domain-modeling",
               "architecture-guidance",
               "jfoundry-implementation-guidance",
+              "vadmin-implementation-guidance",
               "planning"
             ]
           }
@@ -609,6 +661,7 @@
             "domain-modeling",
             "architecture-guidance",
             "jfoundry-implementation-guidance",
+            "vadmin-implementation-guidance",
             "workflow"
           ]
         },
@@ -781,7 +834,8 @@
           "enum": [
             "domain-modeling",
             "architecture-guidance",
-            "jfoundry-implementation-guidance"
+            "jfoundry-implementation-guidance",
+            "vadmin-implementation-guidance"
           ]
         }
       }

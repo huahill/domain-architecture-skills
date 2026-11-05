@@ -34,7 +34,17 @@ PHASES = {
     "domain-modeling",
     "architecture-guidance",
     "jfoundry-implementation-guidance",
+    "vadmin-implementation-guidance",
 }
+OPTIONAL_LANDINGS = {
+    "jfoundry-implementation-guidance",
+    "vadmin-implementation-guidance",
+}
+FRAMEWORK_VERSION_PIN = re.compile(
+    r"(?i)(?:\b(?:jfoundry|vadmin)\b(?:\s+|[:-])v?\d+\.\d+(?:\.\d+)?\b"
+    r"|\b(?:jfoundry|vadmin)[-_](?:bom|starter)\b"
+    r"|\b[\w.-]*:(?:jfoundry|vadmin)[\w.-]*:\d+\.\d+)"
+)
 STATUSES = {"completed", "needs-input", "not-applicable"}
 ID_PATTERN = re.compile(r"^da-handoff-[A-Za-z0-9][A-Za-z0-9._-]*$")
 LINEAGE_PATTERN = re.compile(r"^da-lineage-[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -49,6 +59,18 @@ def _is_non_empty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+
+def _check_contract_11_decision(document: dict[str, Any], entry: dict[str, Any], errors: list[str]) -> None:
+    if document.get("contract_version") != "1.1":
+        return
+    refs = entry.get("evidence_refs")
+    if not isinstance(refs, list) or not any(_is_non_empty_string(item) for item in refs):
+        errors.append(f"{entry.get('decision_ref')} requires evidence_refs")
+    statement = entry.get("statement")
+    if isinstance(statement, str) and FRAMEWORK_VERSION_PIN.search(statement):
+        errors.append(f"{entry.get('decision_ref')} copies a framework release version")
+
+
 def validate_document(document: Any) -> list[str]:
     """Return semantic validation errors; an empty list means valid."""
 
@@ -60,8 +82,8 @@ def validate_document(document: Any) -> list[str]:
     if errors:
         return errors
 
-    if document["contract_version"] != "1.0":
-        errors.append("contract_version must be 1.0")
+    if document["contract_version"] not in {"1.0", "1.1"}:
+        errors.append("contract_version must be 1.0 or 1.1")
     if not _is_non_empty_string(document["lineage_id"]) or not LINEAGE_PATTERN.fullmatch(document["lineage_id"]):
         errors.append("lineage_id must match da-lineage-*")
     if not _is_non_empty_string(document["handoff_id"]) or not ID_PATTERN.fullmatch(document["handoff_id"]):
@@ -150,10 +172,13 @@ def validate_document(document: Any) -> list[str]:
         name = phase.get("phase")
         if name not in PHASES:
             errors.append(f"unknown phase: {name}")
-        elif name in phase_names:
-            errors.append(f"duplicate phase: {name}")
         else:
-            phase_names.add(name)
+            if document["contract_version"] == "1.0" and name == "vadmin-implementation-guidance":
+                errors.append("vadmin-implementation-guidance requires contract 1.1")
+            if name in phase_names:
+                errors.append(f"duplicate phase: {name}")
+            else:
+                phase_names.add(name)
         status = phase.get("status")
         if status not in STATUSES:
             errors.append(f"invalid status for phase {name}")
@@ -162,11 +187,26 @@ def validate_document(document: Any) -> list[str]:
             errors.append(f"completed phase {name} requires result_ref")
         if _is_non_empty_string(result_ref) and result_ref not in artifact_ids and not result_ref.startswith("embedded:"):
             errors.append(f"phase {name} result_ref does not resolve: {result_ref}")
-        if name == "jfoundry-implementation-guidance":
-            if phase.get("applicability") not in {"applicable", "not-applicable", "undecided"}:
-                errors.append("jfoundry phase requires valid applicability")
-            if phase.get("applicability") == "undecided" and (status != "not-applicable" or result_ref is not None):
-                errors.append("undecided jfoundry phase must be not-applicable with null result_ref")
+        if name in OPTIONAL_LANDINGS:
+            applicability = phase.get("applicability")
+            if applicability not in {"applicable", "not-applicable", "undecided"}:
+                errors.append(f"{name} requires valid applicability")
+            if applicability == "undecided" and (status != "not-applicable" or result_ref is not None):
+                errors.append(f"undecided {name} must be not-applicable with null result_ref")
+            if (
+                document["contract_version"] == "1.1"
+                and applicability in {"not-applicable", "undecided"}
+                and not _is_non_empty_string(phase.get("reason"))
+            ):
+                errors.append(f"{name} requires reason when {applicability}")
+
+    if document["contract_version"] == "1.1":
+        for required_phase in (
+            "jfoundry-implementation-guidance",
+            "vadmin-implementation-guidance",
+        ):
+            if required_phase not in phase_names:
+                errors.append(f"contract 1.1 requires phase {required_phase}")
 
     decisions = document["decisions"]
     if not isinstance(decisions, dict):
@@ -178,6 +218,7 @@ def validate_document(document: Any) -> list[str]:
             continue
         if entry.get("original_status") != "confirmed":
             errors.append(f"confirmed decision {entry.get('decision_ref')} must retain original_status confirmed")
+        _check_contract_11_decision(document, entry, errors)
     for entry in decisions.get("accepted_assumptions", []):
         if not isinstance(entry, dict):
             errors.append("accepted assumption entries must be objects")
@@ -187,6 +228,11 @@ def validate_document(document: Any) -> list[str]:
             errors.append(f"accepted assumption {entry.get('decision_ref')} must be inferred or proposed")
         if acceptance.get("status") != "accepted" or not _is_non_empty_string(acceptance.get("source_ref")):
             errors.append(f"accepted assumption {entry.get('decision_ref')} requires acceptance source_ref")
+        _check_contract_11_decision(document, entry, errors)
+    if document["contract_version"] == "1.1":
+        for constraint in decisions.get("constraints", []):
+            if isinstance(constraint, str) and FRAMEWORK_VERSION_PIN.search(constraint):
+                errors.append("constraint copies a framework release version")
 
     blockers = document["blockers"]
     blocker_ids: set[str] = set()

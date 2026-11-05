@@ -65,11 +65,12 @@ requirements
 -> domain modeling
 -> architecture guidance
 -> optional jfoundry landing
+-> optional VAdmin landing
 -> Domain Architecture Handoff
 -> detailed planning or the selected process companion
 ```
 
-The handoff preserves specialist results, decisions, constraints, open questions, and blockers. It identifies the smallest planning-ready increment and its next owner; it is planning input, not a detailed implementation plan. Persisted `docs/domain-architecture/` artifacts are the target business project's decision memory: they must not copy specialist tutorials, and they do not replace specialist skills. When implementing a decided capability such as persistence, re-invoke the owning specialist even if that phase is already completed. The workflow supports a versioned machine-readable handoff contract with stable identity, revisions, dependency-scoped blockers, artifact references, accepted-assumption evidence, and planning-readiness metadata. Markdown remains the human-readable projection, and existing text-only consumers remain compatible. Persisted workflow artifacts use `docs/domain-architecture/`, and standalone detailed plans use its `plans/` child directory.
+The handoff preserves specialist results, decisions, constraints, open questions, and blockers. It identifies the smallest planning-ready increment and its next owner; it is planning input, not a detailed implementation plan. Persisted `docs/domain-architecture/` artifacts are the target business project's decision memory: they must not copy specialist tutorials, and they do not replace specialist skills. When implementing a decided capability such as persistence, re-invoke the owning specialist even if that phase is already completed. The workflow supports a versioned machine-readable handoff contract with stable identity, revisions, dependency-scoped blockers, artifact references, accepted-assumption evidence, and planning-readiness metadata. Markdown remains the human-readable projection, and existing text-only consumers remain compatible. A newly persisted handoff is `docs/domain-architecture/handoff.json` at contract `1.1`; render `handoff.md` from that file and do not edit it by hand. Do not add an implementation roadmap. Do not copy a jfoundry or VAdmin release version, BOM, or Maven coordinate into these artifacts: the project build selects the version, and implementation resolves the current release. Persisted workflow artifacts use `docs/domain-architecture/`, and standalone detailed plans use its `plans/` child directory.
 
 | Need | Entry point |
 |---|---|

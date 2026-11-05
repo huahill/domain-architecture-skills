@@ -273,6 +273,14 @@ dependency direction.
 Map commands, read needs, coordination needs, and lifecycle/access needs to architecture and
 implementation constructs only after the domain assumptions and chosen architecture are clear.
 
+## Persisted Domain File
+
+When this result is persisted, `docs/domain-architecture/01-domain-modeling.md` contains business
+meaning only. Keep each material item's `confirmed`, `inferred`, or `proposed` status and its
+evidence. Do not record ports, packages, framework types, an exception taxonomy, dependency
+coordinates, or a jfoundry or VAdmin release version in that file. Context relationships that need
+their own artifact stay in the optional `02-context-map.md`.
+
 ## When To Ask For Review
 
 Ask for review before coding when any of these conditions could affect business meaning. A review

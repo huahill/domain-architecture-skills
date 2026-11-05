@@ -1,7 +1,7 @@
 import unittest
 
 from scripts.render_handoff import render_handoff
-from tests.handoff.test_validate_handoff import valid_interim
+from tests.handoff.test_validate_handoff import valid_contract_11, valid_interim
 
 
 class RenderHandoffTests(unittest.TestCase):
@@ -25,6 +25,11 @@ class RenderHandoffTests(unittest.TestCase):
         rendered = render_handoff(document, mode="full")
         self.assertIn("[redacted]", rendered)
         self.assertNotIn("docs/domain-architecture/01-domain-modeling.md", rendered)
+
+    def test_summary_includes_optional_landing_reason(self):
+        rendered = render_handoff(valid_contract_11(), mode="summary")
+        self.assertIn("project does not adopt VAdmin", rendered)
+        self.assertIn("jfoundry use is undecided", rendered)
 
 
 if __name__ == "__main__":

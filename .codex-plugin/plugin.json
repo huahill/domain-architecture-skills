@@ -1,6 +1,6 @@
 {
   "name": "domain-architecture",
-  "version": "0.7.0+codex.20261030170226",
+  "version": "0.8.0+codex.20261105152539",
   "description": "Domain modeling and architecture workflow plugin for business software systems.",
   "author": {
     "name": "Huang Xiao",

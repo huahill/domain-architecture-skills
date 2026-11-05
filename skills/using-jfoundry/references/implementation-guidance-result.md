@@ -22,12 +22,12 @@ Handoff Notes:
 
 JFoundry Landing:
   Java version:
-  JFoundry version:
+  Version source:
+  Selected capabilities:
   Runtime choice:
   Application runtime integration policy:
   Project / Maven module shape:
   Primary architecture style:
-  BOM / starters:
   Other optional integrations (excluding Outbox, Inbox, locks, and brokers):
   Package roles / dependency direction:
   Architecture annotations:
@@ -45,6 +45,8 @@ The specialist owns the `JFoundry Landing` payload. Select its fields from the c
 
 `Java version` is the language baseline for every later Java change in the project. Maven, persistence, messaging, and runtime assembly do not limit where it applies. Read `references/java-baseline.md` before writing or changing Java. Do not add another baseline field.
 
+`Version source` names the project build file that selects the current jfoundry release. `Selected capabilities` names the capabilities this landing uses. Do not record a jfoundry release version, BOM version, or Maven coordinate in the result or in `docs/domain-architecture/`. Those products keep releasing. Implementation resolves coordinates and mechanics again from the project build and the selected release documentation.
+
 It is an input to detailed planning, not the detailed plan itself. When a process companion is selected,
 that companion owns its specification, plan, tasks, files, and execution state. Otherwise, detailed plans
 belong under the workflow's default `docs/domain-architecture/plans/` directory. Do not duplicate a
@@ -56,7 +58,7 @@ companion's artifacts.
 - Resolve the primary architecture from confirmed Architecture Guidance, project evidence, established conventions sufficient for the requested change, or an explicit user choice. Do not manufacture an architecture decision inside the JFoundry landing.
 - For an existing project or simple CRUD change, return `completed` when established conventions are sufficient and record that evidence; an upstream phase may be `not-applicable` when it adds no substantive decision.
 - Use `needs-input` for architecture only when the unresolved choice materially changes dependency direction, package or module placement, architecture sketches, or architecture tests. Recommend `domain-architecture-guidance` and ask the smallest blocking question.
-- Use `needs-input` for an exact Java or jfoundry version, runtime, module shape, persistence choice, or messaging requirement only when it prevents a responsible landing. Ask the smallest blocking question rather than choosing an unsafe exact value.
+- Use `needs-input` for the Java baseline, runtime, module shape, persistence choice, or messaging requirement only when it prevents a responsible landing. Ask the smallest blocking question rather than choosing an unsafe exact value. Do not block on or record an exact jfoundry release version; the project build selects it.
 - Keep nonblocking uncertainty in **Open Questions** or **Handoff Notes** and return `completed` when the landing is usable for its recommended next step.
 - Return to architecture guidance when a jfoundry layout or convention conflicts with the confirmed architecture. Preserve the architecture result while the conflict is resolved.
 

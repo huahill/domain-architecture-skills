@@ -80,7 +80,10 @@ class JFoundryGuidanceTests(unittest.TestCase):
         self.assertFalse((WORKFLOW / "references" / "workflow-scenarios.md").exists())
         fixture = ROOT / "tests" / "fixtures" / "workflow-scenarios.md"
         self.assertTrue(fixture.is_file())
-        self.assertIn("## Scenario 25:", fixture.read_text(encoding="utf-8"))
+        text = fixture.read_text(encoding="utf-8")
+        self.assertIn("## Scenario 25:", text)
+        self.assertIn("## Scenario 26:", text)
+        self.assertIn("## Scenario 27:", text)
 
     def test_jfoundry_exception_guidance_requires_preflight_and_guardrails(self):
         text = (USING_JFOUNDRY / "references" / "exception-handling.md").read_text(encoding="utf-8")

@@ -46,8 +46,10 @@ Run phases in this order:
    perform or rewrite strategic modeling.
 3. Produce and consume the `Domain Modeling Result` from `domain-modeling` when needed.
 4. Produce and consume the `Architecture Guidance Result` from `domain-architecture-guidance` when needed.
-5. Produce and consume the `using-jfoundry` result only when jfoundry applies.
-6. Produce the `Domain Architecture Handoff` and route it to detailed planning.
+5. Produce and consume the `using-jfoundry` result only when jfoundry applies, and the
+   `using-vadmin` result only when VAdmin applies.
+6. Produce the `Domain Architecture Handoff` and route it to detailed planning. A persisted
+   handoff uses contract `1.1` and `docs/domain-architecture/handoff.json`.
 
 Move backward when later work invalidates earlier assumptions:
 
@@ -55,6 +57,7 @@ Move backward when later work invalidates earlier assumptions:
   Subdomain scope, Bounded Context meaning, team or rule ownership, context relationships, or
   current/target intent.
 - Return from jfoundry guidance to architecture when framework conventions conflict with chosen boundaries.
+- Return from VAdmin guidance to architecture when an administration landing conflicts with chosen boundaries.
 - Return from implementation or review to architecture when code drifts from the chosen architecture.
 - Return from implementation to modeling when business meaning changes.
 
@@ -70,6 +73,20 @@ Classify jfoundry applicability without making it a prerequisite for framework-n
 - When jfoundry use is undecided, continue Domain Modeling and Architecture Guidance without invoking `using-jfoundry`. Record the pending optional landing in the handoff. Ask the smallest blocking question only when the recommended next activity is framework-specific and the unresolved choice materially changes that activity.
 
 An undecided optional framework landing does not make Domain Modeling or Architecture Guidance `needs-input`.
+
+## Administration Landing Applicability
+
+Classify VAdmin the same way, without making it a prerequisite for framework-neutral work:
+
+- When the project adopts VAdmin or the user explicitly requests it, invoke `using-vadmin` for
+  administration setup or administration changes. Do not copy its release version or coordinates
+  into the handoff.
+- When the project does not adopt VAdmin, skip `using-vadmin` and record
+  `vadmin-implementation-guidance` as `not-applicable` with the reason. Do not invoke the
+  specialist merely to return `not-applicable`.
+- When VAdmin adoption is undecided, continue Domain Modeling and Architecture Guidance without
+  invoking `using-vadmin`. Record the pending landing and ask only when the next activity is
+  administration work and the choice materially changes it.
 
 ## Blocking Rules
 
@@ -114,6 +131,7 @@ Produce one composite handoff containing:
 - governing constraints;
 - open questions, including blockers;
 - the framework landing, or why none applies;
+- the VAdmin landing, or why none applies;
 - the application runtime integration policy when a runtime decision makes it relevant;
 - planning readiness for the selected increment, including its explicit non-goals and dependent blockers;
 - the next planning owner: plugin-managed planning or the selected process companion;
@@ -122,8 +140,9 @@ Produce one composite handoff containing:
 Keep distinctions explicit among domain-modeling decisions, architecture-style constraints, framework conventions, heuristics, and project policies.
 
 The persisted handoff and specialist result files record this project's choices. They must not
-reproduce specialist references or framework tutorials, and they do not retire those skills.
-Implementation still executes the specialist that owns the concern being coded.
+reproduce specialist references, framework tutorials, or a jfoundry or VAdmin release version.
+They do not retire those skills. Implementation still executes the specialist that owns the
+concern being coded and resolves the current release from the project build.
 
 The coordinator may summarize or reference a specialist payload, but it must preserve the evidence
 state of every consumed domain item. A proposed target cannot appear under confirmed decisions. It

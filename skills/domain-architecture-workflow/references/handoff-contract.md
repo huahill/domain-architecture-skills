@@ -14,6 +14,7 @@ decision memory rather than a substitute for those specialists:
 Domain Modeling Result
         -> Architecture Guidance Result
         -> optional JFoundry Implementation Guidance Result
+        -> optional VAdmin Implementation Guidance Result
         -> Domain Architecture Handoff
 ```
 
@@ -35,6 +36,7 @@ The contract has these top-level sections:
   increment, and non-goals;
 - producer: workflow skill, plugin release, and generation timestamp;
 - phases: specialist status, result reference, optional applicability, and dependency impact;
+- optional landing reason when jfoundry or VAdmin is `not-applicable` or `undecided`;
 - decisions: confirmed decisions, accepted assumptions, and governing constraints;
 - blockers and questions: dependency-scoped blockers and nonblocking open questions;
 - artifacts: specialist-owned result or evidence references;
@@ -48,6 +50,7 @@ The contract has these top-level sections:
 - `lineage_id` identifies one logical requested outcome.
 - `handoff_id` identifies one immutable handoff artifact within that lineage.
 - `revision` increases monotonically for that handoff.
+- Contract `1.0` remains readable. A newly persisted handoff uses contract `1.1`.
 - `kind: interim` means a dependent blocker remains open.
 - `kind: final` means the selected increment can be routed to planning or the selected companion.
 - `kind: revision` records a later handoff after new evidence or implementation feedback; it must
@@ -56,6 +59,22 @@ The contract has these top-level sections:
 
 Unchanged specialist results should keep their references across revisions. New revisions identify
 downstream decisions made stale by changed evidence instead of silently deleting them.
+
+## Contract 1.1
+
+`1.1` is additive for new persisted handoffs. It does not invalidate a stored `1.0` document.
+
+- The phase list includes `vadmin-implementation-guidance`.
+- Both `jfoundry-implementation-guidance` and `vadmin-implementation-guidance` are present, so an
+  unused or undecided landing is explicit. Record `applicability` and, unless the landing is
+  applicable, a `reason`. Do not invoke either specialist merely to produce that phase.
+- Every confirmed decision and accepted assumption has at least one `evidence_refs` entry.
+- No decision statement copies a jfoundry or VAdmin release version, BOM, or Maven coordinate.
+  Name the project build file as the version source when the landing depends on one.
+
+A consumer that does not understand `1.1` stops at the handoff boundary rather than guessing.
+Existing `1.0` handoffs remain valid input. Write `1.1` when persisting a new handoff or a new
+revision of one.
 
 ## Phase Status and Dependency Scope
 
@@ -67,7 +86,8 @@ Phase statuses remain exactly:
 
 The `affects` field records which later phase or planning activity depends on the result. A
 `needs-input` result therefore blocks only dependent work. An undecided optional jfoundry landing
-does not block framework-neutral modeling or architecture guidance.
+or VAdmin landing does not block framework-neutral modeling or architecture guidance. For contract
+`1.1`, that phase is `not-applicable`, its `result_ref` is null, and `reason` states why.
 
 ## Blockers
 
@@ -98,6 +118,14 @@ statements and their evidence separate.
 
 Artifacts are referenced by stable IDs and repository-relative paths when persisted. A result may
 be embedded for an ephemeral conversation, but it still receives an artifact ID in the handoff.
+When persisted, `docs/domain-architecture/handoff.json` is the active handoff. Copy the previous
+active document to `docs/domain-architecture/revisions/<handoff_id>.json` before replacing it with
+a new `handoff_id`. Specialist files contain only their owned current facts; superseded statements
+move to `invalidation` instead of remaining beside a historical banner.
+
+Do not persist an implementation roadmap or an agent guide. `handoff.md` is the rendered
+projection of `handoff.json` and is not an independently edited source.
+
 Artifacts may carry `classification` (`public`, `internal`, `confidential`, or `restricted`) and a
 `redaction_required` flag. Summary projections should omit restricted content and point consumers
 to the full artifact references only when the consumer is authorized to use them.

@@ -65,6 +65,13 @@ conventions, not as architecture rules.
 
 Tie evidence to project artifacts, confirmed domain results, and applicable sources. Record affected boundaries and the practical consequence of each decision.
 
+## Persisted Architecture File
+
+When this result is persisted, `docs/domain-architecture/03-architecture-guidance.md` records the
+selected style, dependency direction, responsibility boundaries, and validation rules. Do not copy
+starter lists, Maven coordinates, method mechanics, or a jfoundry or VAdmin release version into
+that file.
+
 ## Decision Discipline
 
 Classify every strong rule by its source level: **DDD core discipline**, **architecture constraint from the selected architecture**, **framework convention**, **heuristic**, or **project policy**. Read `architecture-constraints.md` for the rules supplied by each architecture and `source-policy.md` for authority and citation guidance; do not duplicate those catalogs here.

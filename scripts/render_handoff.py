@@ -43,6 +43,9 @@ def render_handoff(document: dict[str, Any], mode: str = "summary") -> str:
     for phase in document.get("phases", []):
         applicability = phase.get("applicability")
         suffix = f"; applicability={applicability}" if applicability else ""
+        reason = phase.get("reason")
+        if reason:
+            suffix += f"; {reason}"
         lines.append(f"- `{phase.get('phase')}`: **{phase.get('status')}**{suffix}")
 
     blockers = document.get("blockers", [])

@@ -84,6 +84,24 @@ def valid_interim():
     }
 
 
+
+def valid_contract_11():
+    document = valid_interim()
+    document["contract_version"] = "1.1"
+    document["phases"][2]["reason"] = "jfoundry use is undecided"
+    document["phases"].append(
+        {
+            "phase": "vadmin-implementation-guidance",
+            "applicability": "not-applicable",
+            "status": "not-applicable",
+            "result_ref": None,
+            "affects": ["planning"],
+            "reason": "project does not adopt VAdmin",
+        }
+    )
+    return document
+
+
 class ValidateHandoffTests(unittest.TestCase):
     def test_accepts_valid_interim_handoff(self):
         self.assertEqual(validate_document(valid_interim()), [])
@@ -126,6 +144,77 @@ class ValidateHandoffTests(unittest.TestCase):
         document["kind"] = "revision"
         errors = validate_document(document)
         self.assertTrue(any("parent_handoff_id" in error for error in errors))
+
+    def test_accepts_contract_11_with_explicit_optional_landings(self):
+        self.assertEqual(validate_document(valid_contract_11()), [])
+
+    def test_contract_11_requires_both_optional_landings(self):
+        document = valid_contract_11()
+        document["phases"] = [
+            phase for phase in document["phases"] if phase["phase"] != "vadmin-implementation-guidance"
+        ]
+        errors = validate_document(document)
+        self.assertTrue(any("requires phase vadmin-implementation-guidance" in error for error in errors))
+
+    def test_contract_11_requires_reason_for_unused_landing(self):
+        document = valid_contract_11()
+        document["phases"][3].pop("reason")
+        errors = validate_document(document)
+        self.assertTrue(any("requires reason" in error for error in errors))
+
+    def test_contract_11_requires_evidence_refs(self):
+        document = valid_contract_11()
+        document["decisions"]["confirmed"].append(
+            {
+                "decision_ref": "architecture:STYLE-001",
+                "statement": "Use hexagonal boundaries for the order context.",
+                "original_status": "confirmed",
+                "evidence_refs": [],
+                "acceptance": {"status": "not-required", "source_ref": None},
+            }
+        )
+        errors = validate_document(document)
+        self.assertTrue(any("requires evidence_refs" in error for error in errors))
+
+    def test_contract_11_rejects_pinned_framework_release(self):
+        document = valid_contract_11()
+        document["decisions"]["confirmed"].append(
+            {
+                "decision_ref": "jfoundry:VERSION-001",
+                "statement": "Use jfoundry 1.7.0 for this service.",
+                "original_status": "confirmed",
+                "evidence_refs": ["E-010"],
+                "acceptance": {"status": "not-required", "source_ref": None},
+            }
+        )
+        errors = validate_document(document)
+        self.assertTrue(any("framework release version" in error for error in errors))
+
+    def test_contract_11_allows_version_source_without_a_pinned_release(self):
+        document = valid_contract_11()
+        document["decisions"]["confirmed"].append(
+            {
+                "decision_ref": "jfoundry:VERSION-SOURCE",
+                "statement": "Resolve the current jfoundry release from the project build.",
+                "original_status": "confirmed",
+                "evidence_refs": ["E-011"],
+                "acceptance": {"status": "not-required", "source_ref": None},
+            }
+        )
+        self.assertEqual(validate_document(document), [])
+
+    def test_contract_10_does_not_apply_new_evidence_or_version_rules(self):
+        document = valid_interim()
+        document["decisions"]["confirmed"].append(
+            {
+                "decision_ref": "jfoundry:VERSION-001",
+                "statement": "Use jfoundry 1.7.0 for this service.",
+                "original_status": "confirmed",
+                "evidence_refs": [],
+                "acceptance": {"status": "not-required", "source_ref": None},
+            }
+        )
+        self.assertEqual(validate_document(document), [])
 
 
 if __name__ == "__main__":

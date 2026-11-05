@@ -40,6 +40,8 @@ an appearance.
 
 ## What To Record
 
+Do not record a VAdmin release version, BOM, or Maven coordinate. VAdmin keeps releasing. The project build selects the current release, and implementation resolves coordinates from that release and its documentation.
+
 - The confirmed runtime and identity strategy.
 - Each declared module with its pages, permissions, and translation bundles.
 - Whether every dynamic view has `@Uses` on a subclass of `AdminModuleViewAnchor`. `@Uses` on the Spring Boot application class does not count.

@@ -201,3 +201,19 @@ Use these compact scenarios to review routing and result protocols. Each scenari
 **Expected:** Consume the persisted handoff as project decisions. Re-invoke `using-jfoundry`, read persistence and repository references plus the selected release, and name each aggregate's adapter shape (`MybatisPlusAggregateRepository` for a single root record, a business persistence adapter with complete child synchronization for root-plus-dependents, or a direct repository implementation). Persist only those project choices. Do not implement ordinary mapper/XML/DO repositories merely because a companion plan says "migrate MyBatis".
 
 **Prohibited:** Treating `docs/domain-architecture/` as a substitute for `using-jfoundry`; copying persistence tutorials into the handoff; skipping the specialist because the landing phase is already `completed`.
+
+## Scenario 26: Non-VAdmin Project
+
+**Input:** A business project does not adopt VAdmin, or VAdmin adoption is still undecided. The user asks for domain modeling and architecture guidance.
+
+**Expected:** Run framework-neutral Domain Modeling and Architecture Guidance. Do not invoke `using-vadmin`. In a persisted contract `1.1` handoff, record `vadmin-implementation-guidance` as `not-applicable`, with a reason and a null `result_ref`. An undecided administration choice does not block those earlier phases.
+
+**Prohibited:** Invoking `using-vadmin` only to fill the phase, or treating a missing VAdmin decision as a blocker for framework-neutral work.
+
+## Scenario 27: Persisted Handoff Without A Frozen Framework Release
+
+**Input:** A completed workflow persists its handoff for a jfoundry project that also adopts VAdmin. jfoundry and VAdmin continue to publish new releases.
+
+**Expected:** Persist the current handoff as `docs/domain-architecture/handoff.json` using contract `1.1`, and render `handoff.md` from that file. Keep business meaning in `01-domain-modeling.md`, boundaries in `03-architecture-guidance.md`, selected jfoundry capabilities in `04-jfoundry-implementation-guidance.md`, and VAdmin runtime, identity, modules, pages, and permissions in `vadmin-implementation-guidance.md`. Name the project build file as the version source. Do not create `05-implementation-roadmap.md` or an agent guide. Resolve the current jfoundry and VAdmin releases again at implementation time.
+
+**Prohibited:** Copying a jfoundry or VAdmin release version, BOM, or Maven coordinate into the handoff; hand-editing `handoff.md`; or treating a previously copied version as current.
