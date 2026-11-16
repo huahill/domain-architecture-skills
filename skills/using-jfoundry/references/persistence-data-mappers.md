@@ -27,6 +27,8 @@ If aggregate ownership or lifecycle is unclear, return to domain modeling rather
 
 Do not override public lifecycle methods on jfoundry repository bases. Use their supported extension points, or choose a direct implementation when the operation does not fit the base.
 
+A versioned aggregate may be modified only through the instance loaded or added in the same persistence context. Do not update that root by primary key alone. On MyBatis-Plus, keep child-row synchronization in the completion callback passed to `updateAggregate`; do not override `doModify` to skip the loaded-instance check. When the selected release makes `doModify` final, use its protected completion hook instead. A direct repository implementation has the same duty. JPA `doModify` already enforces this instance rule and must not be replaced by `merge` on identifier equality.
+
 ## Mapping And Transactions
 
 - Keep domain IDs as strong jMolecules identifiers and convert them at the adapter boundary.
