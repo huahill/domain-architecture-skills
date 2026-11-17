@@ -19,13 +19,15 @@ If aggregate ownership or lifecycle is unclear, return to domain modeling rather
 
 | Situation | Recommended shape |
 |---|---|
-| One MyBatis-Plus root record fully stores one aggregate | `MybatisPlusAggregateRepository` with one `AggregateData`, `DataMapper`, and `BaseMapper` |
+| One MyBatis-Plus root record fully stores one aggregate | `MybatisPlusAggregateRepository` with one `MybatisPlusAggregateData`, `MybatisPlusDataMapper`, and `BaseMapper` |
 | MyBatis-Plus root plus dependent records | Keep complete load/write synchronization in one business persistence adapter; use the base helpers only when they fit |
 | One JPA-managed entity graph per aggregate | `JpaAggregateRepository` and `JpaAggregateMapper` |
 | Multiple independent entity graphs, stores, or persistence technologies | A business-owned composite adapter or direct repository implementation |
 | Framework base obscures project behavior | Implement the aggregate repository contract directly |
 
 Do not override public lifecycle methods on jfoundry repository bases. Use their supported extension points, or choose a direct implementation when the operation does not fit the base.
+
+`MybatisPlusAggregateData` and `MybatisPlusDataMapper` belong only to MyBatis-Plus. They are not a shared persistence contract and must not be used for JPA. A JPA aggregate uses `JpaAggregateMapper`: restore the aggregate from the managed entity and write current state back onto that same instance.
 
 A versioned aggregate may be modified only through the instance loaded or added in the same persistence context. Do not update that root by primary key alone. On MyBatis-Plus, keep child-row synchronization in the completion callback passed to `updateAggregate`; do not override `doModify` to skip the loaded-instance check. When the selected release makes `doModify` final, use its protected completion hook instead. A direct repository implementation has the same duty. JPA `doModify` already enforces this instance rule and must not be replaced by `merge` on identifier equality.
 
